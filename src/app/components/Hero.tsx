@@ -126,7 +126,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="grid grid-cols-4 gap-4 sm:gap-8 max-w-3xl mx-auto mb-20"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 max-w-3xl mx-auto mb-20"
           >
             {Object.entries(timeLeft).map(([unit, value], index) => (
               <motion.div

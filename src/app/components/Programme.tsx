@@ -246,7 +246,7 @@ export function Programme() {
         </motion.div>
 
         <Tabs defaultValue="day1" className="w-full" onValueChange={setSelectedDay}>
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-12 bg-muted/50 p-2 rounded-2xl h-auto gap-2">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 mb-12 bg-muted/50 p-2 rounded-2xl h-auto gap-2">
             {Object.entries(schedule).map(([key, day]) => (
               <TabsTrigger
                 key={key}

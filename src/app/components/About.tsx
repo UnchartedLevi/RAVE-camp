@@ -63,10 +63,18 @@ export function About() {
             transition={{ duration: 0.8 }}
           >
 
-            <section className="py-20 bg-purple-50 dark:bg-slate-950">
+            <section
+              id='raveExperience'
+              className="py-20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <div className="relative">
+                  <motion.div
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7 }}
+                    className="relative"
+                  >
                     <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-105">
                       <ImageWithFallback
                         src="https://images.unsplash.com/photo-1758270704524-596810e891b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIweW91bmclMjBzdHVkZW50cyUyMGxlYXJuaW5nfGVufDF8fHx8MTc3NDM0MDYyMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
@@ -74,9 +82,16 @@ export function About() {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div id='exp' className="text-left text-foreground">
+                  <motion.div
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7, delay: 0.15 }}
+                    id='exp'
+                    className="text-left text-foreground"
+                  >
                     <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
                       The R.A.V.E. Experience
                     </h2>
@@ -123,7 +138,7 @@ export function About() {
                     </div>
 
 
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </section>
@@ -183,7 +198,7 @@ export function About() {
             </motion.div>
           </div>
         </motion.div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 }
