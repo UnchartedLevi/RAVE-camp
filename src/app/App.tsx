@@ -16,7 +16,7 @@ import { Footer } from './components/Footer';
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background px-4 sm:px-6 md:px-8">
+      <div className="min-h-screen bg-background px-4 sm:px-6 md:px-8 overflow-x-hidden">
         <Navigation />
         <Hero />
         <About />

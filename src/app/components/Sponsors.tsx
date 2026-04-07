@@ -37,7 +37,7 @@ export function Sponsors() {
   ];
 
   return (
-    <section className="py-24 bg-black">
+    <section className="py-24 bg-white text-slate-900 dark:bg-black dark:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,10 +46,10 @@ export function Sponsors() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Sponsors</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6">
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Sponsors</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-900 dark:text-gray-400 max-w-3xl mx-auto">
             Powered by organizations committed to developing Africa's next generation of leaders.
           </p>
         </motion.div>
@@ -67,7 +67,7 @@ export function Sponsors() {
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center`}>
                   <tier.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-white">{tier.name}</h3>
+                <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{tier.name}</h3>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -78,15 +78,15 @@ export function Sponsors() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-xl p-8 hover:border-white/40 hover:from-white/15 transition-all duration-300"
+                    className="bg-gradient-to-br from-slate-50 to-white border border-slate-400 rounded-xl p-8 hover:border-slate-700 hover:from-slate-200 transition-all duration-300 dark:from-white/10 dark:to-white/5 dark:border-white/20 dark:hover:border-white/40 dark:hover:from-white/15"
                   >
                     <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${tier.color} flex items-center justify-center mb-4 mx-auto`}>
                       <span className="text-2xl font-black text-white">
                         {sponsor.name.split(' ').map(w => w[0]).join('')}
                       </span>
                     </div>
-                    <h4 className="text-xl font-bold text-white text-center mb-2">{sponsor.name}</h4>
-                    <p className="text-sm text-gray-400 text-center">{sponsor.industry}</p>
+                    <h4 className="text-xl font-bold text-slate-900 dark:text-white text-center mb-2">{sponsor.name}</h4>
+                    <p className="text-sm text-slate-600 dark:text-gray-400 text-center">{sponsor.industry}</p>
                   </motion.div>
                 ))}
               </div>
@@ -100,12 +100,12 @@ export function Sponsors() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-purple-500/50 rounded-2xl p-12 text-center"
+          className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-200 rounded-2xl p-12 text-center dark:from-purple-500/20 dark:to-pink-500/20 dark:border-purple-500/50"
         >
-          <h3 className="text-3xl font-black text-white mb-4">
+          <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">
             Become a Sponsor
           </h3>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Partner with us to empower Africa's youth and amplify your brand's impact across 15+ countries.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -118,7 +118,7 @@ export function Sponsors() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10"
+              className="border-slate-300 text-slate-800 hover:bg-slate-100 dark:border-white/30 dark:text-white dark:hover:bg-white/10"
             >
               Contact Partnerships Team
             </Button>

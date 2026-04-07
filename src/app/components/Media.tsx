@@ -26,7 +26,7 @@ export function Media() {
   ];
 
   return (
-    <section id="media" className="py-24 bg-gray-900">
+    <section id="media" className="py-24 bg-white text-slate-900 dark:bg-black dark:text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,10 +35,10 @@ export function Media() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
             Media & Partners
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl dark:text-gray-400 max-w-3xl mx-auto">
             Relive the moments and meet our incredible partners making this possible.
           </p>
         </motion.div>
@@ -72,7 +72,7 @@ export function Media() {
 
         {/* Gallery */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-white mb-8 text-center">Photo Gallery</h3>
+          <h3 className="text-3xl font-bold dark:text-white mb-8 text-center">Photo Gallery</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {gallery.map((image, index) => (
               <motion.div
@@ -102,8 +102,8 @@ export function Media() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-3xl font-bold text-white mb-8 text-center">Our Partners</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
+          <h3 className="text-3xl font-bold dark:text-white mb-8 text-center">Our Partners</h3>
+          <div id='partner' className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
             {partners.map((partner, index) => (
               <motion.div
                 key={partner.name}
@@ -111,9 +111,11 @@ export function Media() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-6 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                className="text-black bg-transparent border border-black/40 rounded-xl p-6 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all duration-300 dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/20"
               >
-                <span className="text-2xl font-black text-white">{partner.logo}</span>
+                <span className="text-2xl font-black text-black dark:text-white">
+                  {partner.logo}
+                </span>
               </motion.div>
             ))}
           </div>

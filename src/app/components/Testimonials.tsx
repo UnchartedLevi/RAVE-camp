@@ -30,7 +30,7 @@ export function Testimonials() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-300 dark:from-gray-900 dark:to-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,10 +39,10 @@ export function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black dark:text-white mb-6">
             What Alumni Say
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-800 dark:text-gray-400 max-w-3xl mx-auto">
             Hear from past participants who have gone on to create impact across Africa and beyond.
           </p>
         </motion.div>
@@ -55,17 +55,20 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-2xl p-8 hover:border-purple-500/50 transition-all duration-300"
+              className="bg-gradient-to-br from-white to-gray-100 border border-black/10 rounded-2xl p-8 hover:border-purple-400/50 hover:shadow-lg transition-all duration-300 dark:from-white/10 dark:to-white/5 dark:border-white/10 dark:hover:border-purple-500/50"
             >
-              <Quote className="w-10 h-10 text-purple-400 mb-4" />
-              
+              <Quote className="w-10 h-10 text-purple-500 dark:text-purple-400 mb-4" />
+
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+                  <Star
+                    key={i}
+                    className="w-5 h-5 fill-yellow-400 text-yellow-500 dark:text-yellow-500 dark:fill-yellow-500"
+                  />
                 ))}
               </div>
 
-              <p className="text-gray-300 mb-6 leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                 "{testimonial.quote}"
               </p>
 
@@ -76,9 +79,15 @@ export function Testimonials() {
                   className="w-14 h-14 rounded-full object-cover"
                 />
                 <div>
-                  <h4 className="font-bold text-white">{testimonial.name}</h4>
-                  <p className="text-sm text-purple-400">{testimonial.role}</p>
-                  <p className="text-sm text-gray-500">{testimonial.country}</p>
+                  <h4 className="font-bold text-gray-900 dark:text-white">
+                    {testimonial.name}
+                  </h4>
+                  <p className="text-sm text-purple-600 dark:text-purple-400">
+                    {testimonial.role}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500">
+                    {testimonial.country}
+                  </p>
                 </div>
               </div>
             </motion.div>

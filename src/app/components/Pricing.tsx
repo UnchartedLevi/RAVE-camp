@@ -72,63 +72,162 @@ export function Pricing() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className={`relative bg-card border ${
-                plan.popular ? 'border-purple-500/50 scale-105' : 'border-border'
-              } rounded-3xl p-10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-sm font-bold text-white shadow-lg">
-                  MOST POPULAR
-                </div>
-              )}
+        <div className="mb-16 max-w-6xl mx-auto px-4">
 
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-6`}>
-                <plan.icon className="w-8 h-8 text-white" />
-              </div>
-
-              <h3 className="text-3xl font-black text-foreground mb-3">{plan.name}</h3>
-              <p className="text-base text-muted-foreground mb-8">{plan.description}</p>
-
-              <div className="mb-8">
-                <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-6xl font-black text-foreground">{plan.price}</span>
-                  {plan.originalPrice && (
-                    <span className="text-2xl text-muted-foreground line-through">{plan.originalPrice}</span>
-                  )}
-                </div>
-                <p className="text-base text-purple-500 font-semibold">{plan.deadline}</p>
-              </div>
-
-              <ul className="space-y-4 mb-10">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground text-base">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                onClick={scrollToRegister}
-                className={`w-full h-14 text-base font-bold ${
-                  plan.popular
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25'
-                    : 'bg-muted hover:bg-muted/80 text-foreground'
-                }`}
+          {/* MOBILE: Swipeable */}
+          <div className="flex md:hidden gap-6 overflow-x-auto snap-x snap-mandatory pb-4">
+            {plans.map((plan, index) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className={`snap-center flex-shrink-0 w-[85%] relative bg-card border ${plan.popular
+                    ? 'border-purple-500/50'
+                    : 'border-border'
+                  } rounded-3xl p-6 hover:border-purple-500/30 transition-all duration-300 shadow-lg`}
               >
-                Choose Plan
-              </Button>
-            </motion.div>
-          ))}
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-xs font-bold text-white shadow-lg">
+                    MOST POPULAR
+                  </div>
+                )}
+
+                {/* Icon */}
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-6`}>
+                  <plan.icon className="w-7 h-7 text-white" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-black text-foreground mb-3">
+                  {plan.name}
+                </h3>
+
+                <p className="text-sm text-muted-foreground mb-6">
+                  {plan.description}
+                </p>
+
+                {/* Price */}
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-5xl font-black text-foreground">
+                      {plan.price}
+                    </span>
+                    {plan.originalPrice && (
+                      <span className="text-lg text-muted-foreground line-through">
+                        {plan.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-purple-500 font-semibold">
+                    {plan.deadline}
+                  </p>
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Button
+                  onClick={scrollToRegister}
+                  className={`w-full h-12 text-sm font-bold ${plan.popular
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+                      : 'bg-muted text-foreground'
+                    }`}
+                >
+                  Choose Plan
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* DESKTOP: Bigger Grid */}
+          <div className="hidden md:grid md:grid-cols-2 gap-10">
+            {plans.map((plan, index) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                whileHover={{ y: -10 }}
+                className={`relative bg-card border ${plan.popular
+                    ? 'border-purple-500/50 scale-105'
+                    : 'border-border'
+                  } rounded-3xl p-12 hover:border-purple-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-sm font-bold text-white shadow-lg">
+                    MOST POPULAR
+                  </div>
+                )}
+
+                {/* Icon */}
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-8`}>
+                  <plan.icon className="w-8 h-8 text-white" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-3xl font-black text-foreground mb-4">
+                  {plan.name}
+                </h3>
+
+                <p className="text-base text-muted-foreground mb-8">
+                  {plan.description}
+                </p>
+
+                {/* Price */}
+                <div className="mb-8">
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <span className="text-6xl font-black text-foreground">
+                      {plan.price}
+                    </span>
+                    {plan.originalPrice && (
+                      <span className="text-2xl text-muted-foreground line-through">
+                        {plan.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-base text-purple-500 font-semibold">
+                    {plan.deadline}
+                  </p>
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-4 mb-10">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-base text-muted-foreground">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Button
+                  onClick={scrollToRegister}
+                  className={`w-full h-14 text-base font-bold ${plan.popular
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+                      : 'bg-muted text-foreground'
+                    }`}
+                >
+                  Choose Plan
+                </Button>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Scholarship Info */}

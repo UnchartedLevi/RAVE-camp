@@ -40,7 +40,7 @@ export function Navigation() {
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex flex-wrap items-center justify-between h-24 gap-4">
           {/* Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -50,37 +50,41 @@ export function Navigation() {
           </button>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+          <div className="hidden md:flex md:flex-wrap md:items-center md:justify-end md:gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-4 md:gap-8 flex-wrap justify-center md:justify-start min-w-0">
+              {navLinks.map((link) => (
+                <button
+                  key={link.name}
+                  onClick={() => scrollToSection(link.href)}
+                  className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 whitespace-nowrap"
+                >
+                  {link.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 flex-wrap justify-center md:justify-end mt-2 md:mt-0">
+              {/* Theme Toggle */}
               <button
-                key={link.name}
-                onClick={() => scrollToSection(link.href)}
-                className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
+                aria-label="Toggle theme"
               >
-                {link.name}
+                {theme === 'light' ? (
+                  <Sun className="w-5 h-5 text-foreground" />
+                ) : (
+                  <Moon className="w-5 h-5 text-foreground" />
+                )}
               </button>
-            ))}
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? (
-                <Sun className="w-5 h-5 text-foreground" />
-              ) : (
-                <Moon className="w-5 h-5 text-foreground" />
-              )}
-            </button>
-
-            <Button
-              onClick={() => scrollToSection('#register')}
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
-            >
-              Register Now
-            </Button>
+              <Button
+                onClick={() => scrollToSection('#register')}
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25 whitespace-nowrap"
+              >
+                Register Now
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
