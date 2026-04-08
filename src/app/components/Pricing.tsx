@@ -84,8 +84,8 @@ export function Pricing() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className={`snap-center flex-shrink-0 w-[85%] relative bg-card border ${plan.popular
-                    ? 'border-purple-500/50'
-                    : 'border-border'
+                  ? 'border-purple-500/50'
+                  : 'border-border'
                   } rounded-3xl p-6 hover:border-purple-500/30 transition-all duration-300 shadow-lg`}
               >
                 {plan.popular && (
@@ -141,8 +141,8 @@ export function Pricing() {
                 <Button
                   onClick={scrollToRegister}
                   className={`w-full h-12 text-sm font-bold ${plan.popular
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
-                      : 'bg-muted text-foreground'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+                    : 'bg-muted text-foreground'
                     }`}
                 >
                   Choose Plan
@@ -162,8 +162,8 @@ export function Pricing() {
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 whileHover={{ y: -10 }}
                 className={`relative bg-card border ${plan.popular
-                    ? 'border-purple-500/50 scale-105'
-                    : 'border-border'
+                  ? 'border-purple-500/50 scale-105'
+                  : 'border-border'
                   } rounded-3xl p-12 hover:border-purple-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10`}
               >
                 {plan.popular && (
@@ -219,8 +219,8 @@ export function Pricing() {
                 <Button
                   onClick={scrollToRegister}
                   className={`w-full h-14 text-base font-bold ${plan.popular
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
-                      : 'bg-muted text-foreground'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+                    : 'bg-muted text-foreground'
                     }`}
                 >
                   Choose Plan
@@ -229,31 +229,6 @@ export function Pricing() {
             ))}
           </div>
         </div>
-
-        {/* Scholarship Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 rounded-3xl p-12 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500/10 border border-purple-500/20 rounded-full mb-6">
-            <Sparkles className="w-5 h-5 text-purple-500" />
-            <span className="text-base font-semibold text-foreground">Financial Support Available</span>
-          </div>
-          <h3 className="text-3xl font-black text-foreground mb-4">Need Financial Support?</h3>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            We offer partial and full scholarships for exceptional candidates. Limited spots available.
-          </p>
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-2 border-purple-500 text-purple-500 hover:bg-purple-500/10 px-8"
-          >
-            Apply for Scholarship
-          </Button>
-        </motion.div>
       </div>
     </section>
   );

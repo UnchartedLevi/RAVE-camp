@@ -35,18 +35,22 @@ export function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border'
-          : 'bg-transparent'
+        ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border'
+        : 'bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between h-24 gap-4">
           {/* Logo */}
-          <button
+          <button id='theLogo'
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-3xl font-black tracking-tight text-foreground hover:text-purple-500 transition-colors duration-300"
+            className="transition-opacity duration-300 hover:opacity-80"
           >
-            R.A.V.E.<span className="text-purple-500">Camp</span>
+            <img
+              src="/log.png"
+              alt="RAVE Camp"
+              className="h-16 w-auto"
+            />
           </button>
 
           {/* Desktop Navigation */}
