@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { Button } from './ui/button';
 import { useTheme } from './ThemeProvider';
+import logo from '../../assets/log.png';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,8 +47,8 @@ export function Navigation() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="transition-opacity duration-300 hover:opacity-80"
           >
-            <img
-              src="/log.png"
+            <img id='looo'
+              src={logo}
               alt="RAVE Camp"
               className="h-16 w-auto"
             />
