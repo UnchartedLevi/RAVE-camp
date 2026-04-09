@@ -4,9 +4,12 @@ import { Button } from './ui/button';
 import { useTheme } from './ThemeProvider';
 import logo from '../../assets/log.png';
 
+
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
