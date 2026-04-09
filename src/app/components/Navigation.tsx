@@ -48,7 +48,7 @@ export function Navigation() {
             className="transition-opacity duration-300 hover:opacity-80"
           >
             <img id='looo'
-              src={logo}
+              src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
               alt="RAVE Camp"
               className="h-16 w-auto"
             />
