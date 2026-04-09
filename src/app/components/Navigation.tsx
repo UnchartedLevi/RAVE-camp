@@ -4,9 +4,12 @@ import { Button } from './ui/button';
 import { useTheme } from './ThemeProvider';
 import logo from '../../assets/log.png';
 
+
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -47,11 +50,22 @@ export function Navigation() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="transition-opacity duration-300 hover:opacity-80"
           >
-            <img id='looo'
-              src={logo}
-              alt="RAVE Camp"
-              className="h-16 w-auto"
-            />
+            {!imageError ? (
+              <img id='looo'
+                src={logo}
+                alt="RAVE Camp"
+                className={`h-16 w-auto transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-50'}`}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => {
+                  setImageError(true);
+                  setImageLoaded(true);
+                }}
+              />
+            ) : (
+              <div className="h-16 w-32 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                RAVE Camp
+              </div>
+            )}
           </button>
 
           {/* Desktop Navigation */}
