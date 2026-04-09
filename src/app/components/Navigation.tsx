@@ -50,22 +50,11 @@ export function Navigation() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="transition-opacity duration-300 hover:opacity-80"
           >
-            {!imageError ? (
-              <img id='looo'
-                src={logo}
-                alt="RAVE Camp"
-                className={`h-16 w-auto transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-50'}`}
-                onLoad={() => setImageLoaded(true)}
-                onError={() => {
-                  setImageError(true);
-                  setImageLoaded(true);
-                }}
-              />
-            ) : (
-              <div className="h-16 w-32 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                RAVE Camp
-              </div>
-            )}
+            <img id='looo'
+              src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
+              alt="RAVE Camp"
+              className="h-16 w-auto"
+            />
           </button>
 
           {/* Desktop Navigation */}
