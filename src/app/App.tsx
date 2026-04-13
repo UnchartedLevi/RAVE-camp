@@ -7,9 +7,11 @@ import { Programme } from './components/Programme';
 import { Registration } from './components/Registration';
 import { Pricing } from './components/Pricing';
 import { LiveFeatures } from './components/LiveFeatures';
-import { Media } from './components/Media';
+// TODO: Re-enable after Day 1
+// import { Media } from './components/Media';
 import { Sponsors } from './components/Sponsors';
-import { Testimonials } from './components/Testimonials';
+// TODO: Re-enable after Day 1
+// import { Testimonials } from './components/Testimonials';
 import { FAQ } from './components/FAQ';
 import { Newsletter } from './components/Newsletter';
 import { Footer } from './components/Footer';
@@ -26,9 +28,11 @@ export default function App() {
         <Registration />
         <Pricing />
         <LiveFeatures />
-        <Media />
+        {/* TODO: Re-enable after Day 1 */}
+        {/* <Media /> */}
         <Sponsors />
-        <Testimonials />
+        {/* TODO: Re-enable after Day 1 */}
+        {/* <Testimonials /> */}
         <FAQ />
         <Newsletter />
         <Footer />

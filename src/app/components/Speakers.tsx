@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { Linkedin, Twitter } from 'lucide-react';
+import bimpeImage from '../../assets/bimpe.jpeg';
 
 export function Speakers() {
   const speakers = [
@@ -35,6 +36,39 @@ export function Speakers() {
       linkedin: '#',
       twitter: '#',
     },
+    {
+      name: 'Coach Bimpe Enike',
+      title: 'Leadership Coach',
+      expertise: 'Personal Development',
+      image: bimpeImage,
+      linkedin: '#',
+      twitter: '#',
+    },
+    {
+      name: 'Alex Onyia',
+      title: 'Tech Entrepreneur',
+      expertise: 'Product & Innovation',
+      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      linkedin: '#',
+      twitter: '#',
+    },
+    {
+      name: 'Opeyemi Akintunde',
+      title: 'Business Strategist',
+      expertise: 'Scaling & Growth',
+      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      linkedin: '#',
+      twitter: '#',
+    },
+    {
+      name: 'Samuel Maradesa',
+      title: 'Finance Professional',
+      expertise: 'Investment & Wealth',
+      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      linkedin: '#',
+      twitter: '#',
+    },
+
   ];
 
   return (

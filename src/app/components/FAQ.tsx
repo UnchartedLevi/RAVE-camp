@@ -57,7 +57,7 @@ const faqData = [
                 answer: 'Our speakers include successful entrepreneurs, tech leaders, health professionals, and youth advocates. Mentors are carefully selected professionals with expertise in leadership, technology, education, and youth development. View our Speakers and Mentors pages for details.',
             },
             {
-                question: 'What is the UN Assembly Simulation?',
+                question: 'What is the Model United Nations General Assembly?',
                 answer: 'Participants represent different countries in a simulated United Nations assembly, discussing global issues and developing diplomatic solutions. This teaches negotiation, public speaking, and international cooperation skills.',
             },
             {

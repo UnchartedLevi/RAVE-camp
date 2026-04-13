@@ -3,39 +3,6 @@ import { Star, Award, Heart } from 'lucide-react';
 import { Button } from './ui/button';
 
 export function Sponsors() {
-  const tiers = [
-    {
-      name: 'Platinum Sponsors',
-      icon: Star,
-      color: 'from-cyan-400 to-blue-400',
-      sponsors: [
-        { name: 'TechCorp Global', industry: 'Technology' },
-        { name: 'Innovation Partners', industry: 'Venture Capital' },
-      ],
-    },
-    {
-      name: 'Gold Sponsors',
-      icon: Award,
-      color: 'from-yellow-400 to-orange-400',
-      sponsors: [
-        { name: 'Future Bank', industry: 'Financial Services' },
-        { name: 'EduTech Solutions', industry: 'Education' },
-        { name: 'Green Energy Co', industry: 'Sustainability' },
-      ],
-    },
-    {
-      name: 'Community Partners',
-      icon: Heart,
-      color: 'from-pink-400 to-rose-400',
-      sponsors: [
-        { name: 'Youth Leadership Network', industry: 'Non-Profit' },
-        { name: 'African Entrepreneurs Forum', industry: 'Community' },
-        { name: 'Skills Development Hub', industry: 'Education' },
-        { name: 'Impact Collective', industry: 'Social Impact' },
-      ],
-    },
-  ];
-
   return (
     <section className="py-24 bg-white text-slate-900 dark:bg-black dark:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,45 +21,21 @@ export function Sponsors() {
           </p>
         </motion.div>
 
-        <div className="space-y-12 mb-16">
-          {tiers.map((tier, tierIndex) => (
-            <motion.div
-              key={tier.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: tierIndex * 0.1 }}
-            >
-              <div className="flex items-center justify-center gap-3 mb-8">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tier.color} flex items-center justify-center`}>
-                  <tier.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{tier.name}</h3>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {tier.sponsors.map((sponsor, index) => (
-                  <motion.div
-                    key={sponsor.name}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="bg-gradient-to-br from-slate-50 to-white border border-slate-400 rounded-xl p-8 hover:border-slate-700 hover:from-slate-200 transition-all duration-300 dark:from-white/10 dark:to-white/5 dark:border-white/20 dark:hover:border-white/40 dark:hover:from-white/15"
-                  >
-                    <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${tier.color} flex items-center justify-center mb-4 mx-auto`}>
-                      <span className="text-2xl font-black text-white">
-                        {sponsor.name.split(' ').map(w => w[0]).join('')}
-                      </span>
-                    </div>
-                    <h4 className="text-xl font-bold text-slate-900 dark:text-white text-center mb-2">{sponsor.name}</h4>
-                    <p className="text-sm text-slate-600 dark:text-gray-400 text-center">{sponsor.industry}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Sponsor Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-gradient-to-br from-slate-50 to-white border border-slate-400 rounded-xl p-12 text-center dark:from-white/10 dark:to-white/5 dark:border-white/20"
+        >
+          <p className="text-2xl text-slate-600 dark:text-gray-300 font-semibold">
+            Sponsor logos coming soon
+          </p>
+          <p className="text-base text-slate-500 dark:text-gray-400 mt-4">
+            We're partnering with leading organizations across Africa and beyond to make this event possible.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

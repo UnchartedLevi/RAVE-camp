@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { Button } from './ui/button';
 import { useTheme } from './ThemeProvider';
-import logo from '../../assets/log.png';
+
 
 
 export function Navigation() {

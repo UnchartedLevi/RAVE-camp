@@ -42,7 +42,7 @@ export function Footer() {
 
               <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                 <MapPin className="w-5 h-5" />
-                <span>Accra, Ghana</span>
+                <span>Forthright Gardens Estate, Lagos-Ibadan Expressway</span>
               </div>
             </div>
           </div>

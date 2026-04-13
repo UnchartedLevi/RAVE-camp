@@ -28,7 +28,7 @@ export function About() {
     },
     {
       icon: Globe,
-      title: 'UN Assembly Simulation',
+      title: 'Model United Nations General Assembly',
       description: 'Participate in global diplomacy and problem-solving exercises',
       color: 'from-green-500 to-emerald-500',
     },
@@ -117,7 +117,7 @@ export function About() {
                       <div className="flex items-start gap-3">
                         <CheckCircle className="text-[#AF00F0] mt-1 flex-shrink-0" size={24} />
                         <div>
-                          <h3 className="font-semibold mb-1">UN Assembly Simulation</h3>
+                          <h3 className="font-semibold mb-1">Model United Nations General Assembly</h3>
                           <p className="text-gray-600">Participate in global diplomacy and problem-solving exercises</p>
                         </div>
                       </div>
@@ -194,7 +194,7 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <h3 className="text-3xl lg:text-4xl font-black text-white mb-3">6 Days of Transformation</h3>
-              <p className="text-xl lg:text-2xl text-gray-200">Join us in Accra, Ghana for an unforgettable experience</p>
+              <p className="text-xl lg:text-2xl text-gray-200">Join us in Forthright Gardens Estate, Lagos-Ibadan Expressway for an unforgettable experience</p>
             </motion.div>
           </div>
         </motion.div>
