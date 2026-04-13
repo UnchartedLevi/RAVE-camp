@@ -122,12 +122,12 @@ export function LiveFeatures() {
           </TabsContent>
 
           <TabsContent value="leaderboard">
-            <div className="bg-card border border-border rounded-2xl p-8 lg:p-10">
-              <div className="flex items-center gap-3 mb-8">
-                <Trophy className="w-8 h-8 text-yellow-500" />
-                <h3 className="text-3xl font-black text-foreground">Team Rankings</h3>
+            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-10">
+              <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                <Trophy className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-500" />
+                <h3 className="text-2xl sm:text-3xl font-black text-foreground">Team Rankings</h3>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {leaderboard.map((team, index) => (
                   <motion.div
                     key={team.rank}
@@ -135,25 +135,25 @@ export function LiveFeatures() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`flex items-center gap-6 p-6 rounded-2xl ${team.rank === 1
-                        ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50'
-                        : 'bg-muted/50'
+                    className={`flex items-center gap-3 sm:gap-6 p-3 sm:p-6 rounded-2xl ${team.rank === 1
+                      ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50'
+                      : 'bg-muted/50'
                       }`}
                   >
-                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-black text-xl ${team.rank === 1 ? 'bg-yellow-500 text-black' :
-                        team.rank === 2 ? 'bg-gray-400 text-black' :
-                          team.rank === 3 ? 'bg-amber-700 text-white' :
-                            'bg-muted text-foreground'
+                    <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-lg sm:text-xl ${team.rank === 1 ? 'bg-yellow-500 text-black' :
+                      team.rank === 2 ? 'bg-gray-400 text-black' :
+                        team.rank === 3 ? 'bg-amber-700 text-white' :
+                          'bg-muted text-foreground'
                       }`}>
                       {team.rank}
                     </div>
-                    <div className="flex-1">
-                      <h4 className="text-xl font-bold text-foreground">{team.team}</h4>
-                      <p className="text-base text-muted-foreground">{team.points} points</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-base sm:text-xl font-bold text-foreground truncate">{team.team}</h4>
+                      <p className="text-sm sm:text-base text-muted-foreground">{team.points} points</p>
                     </div>
-                    <div className="flex items-center gap-2 text-green-500">
-                      <TrendingUp className="w-5 h-5" />
-                      <span className="font-bold text-lg">{team.trend}</span>
+                    <div className="flex items-center gap-1 sm:gap-2 text-green-500 flex-shrink-0">
+                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="font-bold text-sm sm:text-lg">{team.trend}</span>
                     </div>
                   </motion.div>
                 ))}

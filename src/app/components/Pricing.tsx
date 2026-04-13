@@ -8,7 +8,6 @@ export function Pricing() {
       name: 'Early Bird',
       icon: Zap,
       price: '₦450,000',
-      originalPrice: '₦750,000',
       deadline: 'Until May 1, 2026',
       description: 'Perfect for individual participants',
       features: [
@@ -27,7 +26,6 @@ export function Pricing() {
       name: 'Standard',
       icon: Users,
       price: '₦600,000',
-      originalPrice: '',
       deadline: 'May 2 - June 30, 2026',
       description: 'Join the movement',
       features: [
@@ -114,11 +112,6 @@ export function Pricing() {
                     <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground">
                       {plan.price}
                     </span>
-                    {plan.originalPrice && (
-                      <span className="text-sm sm:text-base lg:text-lg text-muted-foreground line-through">
-                        {plan.originalPrice}
-                      </span>
-                    )}
                   </div>
                   <p className="text-xs sm:text-sm text-purple-500 font-semibold">
                     {plan.deadline}
@@ -192,11 +185,6 @@ export function Pricing() {
                     <span className="text-6xl font-black text-foreground">
                       {plan.price}
                     </span>
-                    {plan.originalPrice && (
-                      <span className="text-2xl text-muted-foreground line-through">
-                        {plan.originalPrice}
-                      </span>
-                    )}
                   </div>
                   <p className="text-base text-purple-500 font-semibold">
                     {plan.deadline}
