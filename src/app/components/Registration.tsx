@@ -17,20 +17,20 @@ type FormData = {
   relationship: string;
   emergencyContact: string;
   emergencyPhone: string;
-  
+
   // Child Info
   childFirstName: string;
   childLastName: string;
   childAge: string;
   childGender: string;
-  
+
   // Medical & Safety
   allergies: string;
   medications: string;
   medicalConditions: string;
   dietaryRestrictions: string;
   specialNeeds: string;
-  
+
   // Additional
   tshirtSize: string;
   swimmingAbility: string;
@@ -114,23 +114,21 @@ export function Registration() {
         </motion.div>
 
         {/* Progress Indicator */}
-        <div className="flex items-center justify-center mb-16">
+        <div className="flex items-center justify-center mb-12 sm:mb-16">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
               <div
-                className={`w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${
-                  step >= s
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white scale-110'
+                className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300 text-xs sm:text-base ${step >= s
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white scale-100 sm:scale-110'
                     : 'bg-muted text-muted-foreground'
-                }`}
+                  }`}
               >
-                {step > s ? <Check className="w-6 h-6" /> : s}
+                {step > s ? <Check className="w-4 h-4 sm:w-6 sm:h-6" /> : s}
               </div>
               {s < 4 && (
                 <div
-                  className={`w-16 h-1 mx-3 transition-all duration-300 ${
-                    step > s ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-muted'
-                  }`}
+                  className={`w-6 h-0.5 sm:w-16 sm:h-1 mx-1 sm:mx-3 transition-all duration-300 ${step > s ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-muted'
+                    }`}
                 />
               )}
             </div>

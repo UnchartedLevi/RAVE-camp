@@ -93,37 +93,6 @@ export function Sponsors() {
             </motion.div>
           ))}
         </div>
-
-        {/* Sponsor CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-200 rounded-2xl p-12 text-center dark:from-purple-500/20 dark:to-pink-500/20 dark:border-purple-500/50"
-        >
-          <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">
-            Become a Sponsor
-          </h3>
-          <p className="text-xl text-slate-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Partner with us to empower Africa's youth and amplify your brand's impact across 15+ countries.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-            >
-              Download Sponsorship Deck
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-slate-300 text-slate-800 hover:bg-slate-100 dark:border-white/30 dark:text-white dark:hover:bg-white/10"
-            >
-              Contact Partnerships Team
-            </Button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

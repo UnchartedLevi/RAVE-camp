@@ -86,10 +86,10 @@ export function Pricing() {
                 className={`snap-center flex-shrink-0 w-[85%] relative bg-card border ${plan.popular
                   ? 'border-purple-500/50'
                   : 'border-border'
-                  } rounded-3xl p-6 hover:border-purple-500/30 transition-all duration-300 shadow-lg`}
+                  } rounded-3xl p-6 pt-10 hover:border-purple-500/30 transition-all duration-300 shadow-lg`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-xs font-bold text-white shadow-lg">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-xs font-bold text-white shadow-lg whitespace-nowrap">
                     MOST POPULAR
                   </div>
                 )}
@@ -111,16 +111,16 @@ export function Pricing() {
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-black text-foreground">
+                    <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground">
                       {plan.price}
                     </span>
                     {plan.originalPrice && (
-                      <span className="text-lg text-muted-foreground line-through">
+                      <span className="text-sm sm:text-base lg:text-lg text-muted-foreground line-through">
                         {plan.originalPrice}
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-purple-500 font-semibold">
+                  <p className="text-xs sm:text-sm text-purple-500 font-semibold">
                     {plan.deadline}
                   </p>
                 </div>
@@ -145,7 +145,7 @@ export function Pricing() {
                     : 'bg-muted text-foreground'
                     }`}
                 >
-                  Choose Plan
+                  Select this Plan
                 </Button>
               </motion.div>
             ))}
@@ -223,7 +223,7 @@ export function Pricing() {
                     : 'bg-muted text-foreground'
                     }`}
                 >
-                  Choose Plan
+                  Select this Plan
                 </Button>
               </motion.div>
             ))}

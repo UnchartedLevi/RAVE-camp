@@ -68,27 +68,27 @@ export function LiveFeatures() {
         </motion.div>
 
         <Tabs defaultValue="updates" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-12 bg-muted/50 p-2 rounded-2xl h-auto gap-2">
+          <TabsList className="grid w-full grid-cols-3 mb-12 bg-muted/50 p-2 rounded-2xl h-auto gap-1 sm:gap-2">
             <TabsTrigger
               value="updates"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-4 rounded-xl text-base"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-2 sm:py-4 rounded-xl text-xs sm:text-base"
             >
-              <Clock className="w-4 h-5 mr-2" />
-              Updates
+              <Clock className="w-3 h-3 sm:w-4 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Updates</span>
             </TabsTrigger>
             <TabsTrigger
               value="leaderboard"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-4 rounded-xl text-base"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-2 sm:py-4 rounded-xl text-xs sm:text-base"
             >
-              <Trophy className="w-4 h-5 mr-2" />
-              Leaderboard
+              <Trophy className="w-3 h-3 sm:w-4 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Leaderboard</span>
             </TabsTrigger>
             <TabsTrigger
               value="sdg"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-4 rounded-xl text-base"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-2 sm:py-4 rounded-xl text-xs sm:text-base"
             >
-              <Globe className="w-4 h-5 mr-2" />
-              UN SDGs
+              <Globe className="w-3 h-3 sm:w-4 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">UN SDGs</span>
             </TabsTrigger>
           </TabsList>
 
@@ -135,18 +135,16 @@ export function LiveFeatures() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`flex items-center gap-6 p-6 rounded-2xl ${
-                      team.rank === 1
+                    className={`flex items-center gap-6 p-6 rounded-2xl ${team.rank === 1
                         ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50'
                         : 'bg-muted/50'
-                    }`}
+                      }`}
                   >
-                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-black text-xl ${
-                      team.rank === 1 ? 'bg-yellow-500 text-black' :
-                      team.rank === 2 ? 'bg-gray-400 text-black' :
-                      team.rank === 3 ? 'bg-amber-700 text-white' :
-                      'bg-muted text-foreground'
-                    }`}>
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-black text-xl ${team.rank === 1 ? 'bg-yellow-500 text-black' :
+                        team.rank === 2 ? 'bg-gray-400 text-black' :
+                          team.rank === 3 ? 'bg-amber-700 text-white' :
+                            'bg-muted text-foreground'
+                      }`}>
                       {team.rank}
                     </div>
                     <div className="flex-1">

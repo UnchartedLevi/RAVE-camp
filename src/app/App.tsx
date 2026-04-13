@@ -10,6 +10,7 @@ import { LiveFeatures } from './components/LiveFeatures';
 import { Media } from './components/Media';
 import { Sponsors } from './components/Sponsors';
 import { Testimonials } from './components/Testimonials';
+import { FAQ } from './components/FAQ';
 import { Newsletter } from './components/Newsletter';
 import { Footer } from './components/Footer';
 
@@ -28,6 +29,7 @@ export default function App() {
         <Media />
         <Sponsors />
         <Testimonials />
+        <FAQ />
         <Newsletter />
         <Footer />
       </div>

@@ -58,7 +58,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-purple-500/10 border border-purple-500/20 rounded-full mb-12 backdrop-blur-sm"
+            className="inline-flex items-center gap-3 px-6 py-3 bg-purple-500/10 border border-purple-500/20 rounded-full mb-12"
           >
             <Calendar className="w-5 h-5 text-purple-400" />
             <span className="text-base font-semibold text-foreground">June 14-19, 2026 • Accra, Ghana</span>
