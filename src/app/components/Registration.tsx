@@ -530,7 +530,7 @@ export function Registration() {
                   size="lg"
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-10"
                 >
-                  Complete Registration
+                  Submit
                 </Button>
               </div>
             </motion.div>

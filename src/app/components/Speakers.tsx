@@ -1,72 +1,39 @@
 import { motion } from 'motion/react';
-import { Linkedin, Twitter } from 'lucide-react';
 import bimpeImage from '../../assets/bimpe.jpeg';
+import alexImage from '../../assets/alex.jpeg';
+import opeImage from '../../assets/woman2.jpg';
+import samImage from '../../assets/samueal.jpg';
 
 export function Speakers() {
   const speakers = [
-    {
-      name: 'Dr. Amara Okafor',
-      title: 'CEO, Tech Innovations Africa',
-      expertise: 'Innovation & Entrepreneurship',
-      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'Kwame Mensah',
-      title: 'Founder, Impact Ventures',
-      expertise: 'Social Impact & Leadership',
-      image: 'https://images.unsplash.com/photo-1645736593731-4eef033ac37a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwbWFuJTIwYnVzaW5lc3MlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQyNjExNTh8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'Sarah Chen',
-      title: 'Head of Growth, Global Startups',
-      expertise: 'Scaling & Strategy',
-      image: 'https://images.unsplash.com/photo-1543132220-e7fef0b974e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMGVudHJlcHJlbmV1ciUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NDI4OTMzN3ww&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'Prof. John Adeyemi',
-      title: 'Sustainability Expert',
-      expertise: 'Climate & Development',
-      image: 'https://images.unsplash.com/photo-1636293235717-7895bf07abc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMGFmcmljYW4lMjBwcm9mZXNzaW9uYWxzJTIwbmV0d29ya2luZ3xlbnwxfHx8fDE3NzQzNDI0NTN8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
-    },
+
     {
       name: 'Coach Bimpe Enike',
       title: 'Leadership Coach',
       expertise: 'Personal Development',
       image: bimpeImage,
-      linkedin: '#',
-      twitter: '#',
+      bio: 'Coach Bimpe Enike is a self-development coach, purity advocate, and writer based in Lagos, Nigeria. She is the founder of the Menders NGO and the Menders Antipoverty Foundation, focusing on leadership, etiquette, and overcoming challenges to achieve a fulfilled life.',
     },
     {
       name: 'Alex Onyia',
-      title: 'Tech Entrepreneur',
+      title: 'Chief Executive Officer at Educare',
       expertise: 'Product & Innovation',
-      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
+      image: alexImage,
+      bio: 'Alex Onyia is a business executive currently serving as CEO at Educare, likely focused on education-related services or technology. As the top leader of the organization, he\'s responsible for driving strategy, growth, and overall direction of the company.',
     },
     {
       name: 'Opeyemi Akintunde',
-      title: 'Business Strategist',
+      title: 'Storyteller. Creative Writer & Filmmaker',
       expertise: 'Scaling & Growth',
-      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
+      image: opeImage,
+      bio: 'Opeyemi Akintunde is a creative professional and storyteller with a focus on filmmaking and written content. She creates impact-driven content aimed at entertaining and inspiring audiences on a global scale — blending artistry with a mission to make a meaningful difference.',
     },
     {
       name: 'Samuel Maradesa',
-      title: 'Finance Professional',
+      title: 'Counsellor, Author, Speaker & Teacher',
       expertise: 'Investment & Wealth',
-      image: 'https://images.unsplash.com/photo-1720874129553-1d2e66076b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHNwZWFrZXIlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzQzMjQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      linkedin: '#',
-      twitter: '#',
+      image: samImage,
+      bio: 'Samuel Maradesa is a multi-credentialed professional holding certifications in counselling (MCASSON), information systems auditing (CISA), and public administration (APA). He wears several hats as a counsellor, author, speaker, and teacher — suggesting a career centered around personal development, education, and advisory work.',
     },
 
   ];
@@ -109,21 +76,10 @@ export function Speakers() {
                   alt={speaker.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-6 left-6 right-6 flex gap-4">
-                    <a
-                      href={speaker.linkedin}
-                      className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
-                    >
-                      <Linkedin className="w-6 h-6 text-white" />
-                    </a>
-                    <a
-                      href={speaker.twitter}
-                      className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors"
-                    >
-                      <Twitter className="w-6 h-6 text-white" />
-                    </a>
-                  </div>
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6">
+                  <p className="text-white text-sm leading-relaxed text-center">
+                    {speaker.bio}
+                  </p>
                 </div>
               </div>
               <h3 className="text-2xl font-black text-foreground mb-2">{speaker.name}</h3>
@@ -141,7 +97,7 @@ export function Speakers() {
           className="text-center mt-16"
         >
           <p className="text-xl text-muted-foreground">
-            + 25 more inspiring speakers and mentors
+            + more inspiring speakers and mentors
           </p>
         </motion.div>
       </div>

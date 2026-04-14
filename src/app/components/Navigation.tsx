@@ -1,147 +1,163 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { Button } from './ui/button';
-import { useTheme } from './ThemeProvider';
-
-
+import { useState, useEffect } from "react";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { Button } from "./ui/button";
+import { useTheme } from "./ThemeProvider";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Speakers', href: '#speakers' },
-    { name: 'Programme', href: '#programme' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Media', href: '#media' },
+    { name: "About", href: "#about" },
+    { name: "Speakers", href: "#speakers" },
+    { name: "Programme", href: "#programme" },
+    { name: "Pricing", href: "#pricing" },
+    { name: "Media", href: "#media" },
   ];
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
       setIsMobileMenuOpen(false);
     }
   };
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-        ? 'bg-background/95 backdrop-blur-xl shadow-lg border-b border-border'
-        : 'bg-transparent'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
+          : "bg-transparent"
+      }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between h-24 gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* NAVBAR */}
+        <div className="h-20 lg:h-24 flex items-center justify-between">
           {/* Logo */}
-          <button id='theLogo'
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="transition-opacity duration-300 hover:opacity-80"
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="shrink-0 hover:opacity-80 transition-opacity duration-300"
           >
-            <img id='looo'
+            <img
               src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
               alt="RAVE Camp"
-              className="h-16 w-auto"
+              className="h-12 sm:h-14 lg:h-16 w-auto"
             />
           </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:flex-wrap md:items-center md:justify-end md:gap-4 w-full md:w-auto">
-            <div className="flex items-center gap-4 md:gap-8 flex-wrap justify-center md:justify-start min-w-0">
+          {/* DESKTOP NAV */}
+          {/* Changed threshold from md to lg so mobile menu activates earlier */}
+          <div className="hidden lg:flex items-center gap-8 xl:gap-10">
+            {/* Links */}
+            <div className="flex items-center gap-5 xl:gap-7">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.href)}
-                  className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 whitespace-nowrap"
+                  className="text-sm xl:text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 whitespace-nowrap"
                 >
                   {link.name}
                 </button>
               ))}
             </div>
 
-            <div className="flex items-center gap-3 flex-wrap justify-center md:justify-end mt-2 md:mt-0">
+            {/* Actions */}
+            <div className="flex items-center gap-3">
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
                 aria-label="Toggle theme"
+                className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300 shrink-0"
               >
-                {theme === 'light' ? (
+                {theme === "light" ? (
                   <Sun className="w-5 h-5 text-foreground" />
                 ) : (
                   <Moon className="w-5 h-5 text-foreground" />
                 )}
               </button>
 
+              {/* CTA */}
               <Button
-                onClick={() => scrollToSection('#register')}
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25 whitespace-nowrap"
+                onClick={() => scrollToSection("#register")}
+                className="h-11 px-5 xl:px-6 text-sm xl:text-base whitespace-nowrap bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/20"
               >
                 Register Now
               </Button>
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-3">
+          {/* MOBILE / TABLET NAV */}
+          {/* Shows below lg */}
+          <div className="flex lg:hidden items-center gap-2 sm:gap-3">
+            {/* Theme */}
             <button
-              id='themeToggle'
               onClick={toggleTheme}
-              className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
               aria-label="Toggle theme"
+              className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
             >
-              {theme === 'light' ? (
+              {theme === "light" ? (
                 <Sun className="w-5 h-5 text-foreground" />
               ) : (
                 <Moon className="w-5 h-5 text-foreground" />
               )}
             </button>
+
+            {/* Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-foreground p-2"
+              aria-label="Toggle menu"
+              className="w-10 h-10 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-all duration-300"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 text-foreground" />
+              ) : (
+                <Menu className="w-5 h-5 text-foreground" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-background/98 backdrop-blur-xl border-t border-border">
-          <div className="px-6 py-8 space-y-6">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollToSection(link.href)}
-                className="block w-full text-left text-xl font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              >
-                {link.name}
-              </button>
-            ))}
+      {/* MOBILE MENU */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ${
+          isMobileMenuOpen
+            ? "max-h-[500px] opacity-100 border-t border-border"
+            : "max-h-0 opacity-0"
+        } bg-background/95 backdrop-blur-xl`}
+      >
+        <div className="px-4 sm:px-6 py-6 space-y-2">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => scrollToSection(link.href)}
+              className="block w-full text-left rounded-xl px-4 py-3 text-base sm:text-lg font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all"
+            >
+              {link.name}
+            </button>
+          ))}
+
+          <div className="pt-3">
             <Button
-              onClick={() => scrollToSection('#register')}
-              size="lg"
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600"
+              onClick={() => scrollToSection("#register")}
+              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
             >
               Register Now
             </Button>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
