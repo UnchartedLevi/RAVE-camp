@@ -14,7 +14,7 @@ export function Sponsors() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Sponsors</span>
+            Sponsors /<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500"> Partners</span>
           </h2>
           <p className="text-xl text-slate-900 dark:text-gray-400 max-w-3xl mx-auto">
             Powered by organizations committed to developing Africa's next generation of leaders.
