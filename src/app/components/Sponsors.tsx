@@ -1,9 +1,5 @@
 import { motion } from 'motion/react';
 import { Star, Award, Heart } from 'lucide-react';
-import s1 from '../../assets/sglogosolid.png';
-import s2 from '../../assets/sgclogo.png';
-import s3 from '../../assets/shslogo.png';
-
 export function Sponsors() {
   const sponsors = [
     {
@@ -13,7 +9,7 @@ export function Sponsors() {
       tierBorder: 'border-yellow-200 dark:border-yellow-500/20',
       icon: Star,
       iconColor: 'text-yellow-500',
-      src: s1, // ← replace with your image URL
+      src: 'https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/sglogosolid.png', // ← replace with your image URL
       alt: 'Gold Sponsor logo',
     },
     {
@@ -23,7 +19,7 @@ export function Sponsors() {
       tierBorder: 'border-purple-200 dark:border-purple-500/20',
       icon: Award,
       iconColor: 'text-purple-500',
-      src: s2, // ← replace with your image URL
+      src: 'https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/sgclogo.png', // ← replace with your image URL
       alt: 'Platinum Sponsor logo',
     },
     {
@@ -33,7 +29,7 @@ export function Sponsors() {
       tierBorder: 'border-pink-200 dark:border-pink-500/20',
       icon: Heart,
       iconColor: 'text-pink-500',
-      src: s3, // ← replace with your image URL
+      src: 'https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/shslogo.png', // ← replace with your image URL
       alt: 'Community Partner logo',
     },
   ];
