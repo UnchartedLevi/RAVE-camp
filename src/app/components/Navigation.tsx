@@ -1,3 +1,4 @@
+//commented out program and media links for now, can be added back in when we have the content ready
 import { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
@@ -20,9 +21,9 @@ export function Navigation() {
   const navLinks = [
     { name: "About", href: "#about" },
     { name: "Speakers", href: "#speakers" },
-    { name: "Programme", href: "#programme" },
+    // { name: "Programme", href: "#programme" },
     { name: "Pricing", href: "#pricing" },
-    { name: "Media", href: "#media" },
+    // { name: "Media", href: "#media" },
   ];
 
   const scrollToSection = (href: string) => {
