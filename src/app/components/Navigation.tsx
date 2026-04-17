@@ -33,6 +33,11 @@ export function Navigation() {
     }
   };
 
+  const scrollToPricing = () => {
+    document.querySelector("#pricing")?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -57,7 +62,6 @@ export function Navigation() {
           </button>
 
           {/* DESKTOP NAV */}
-          {/* Changed threshold from md to lg so mobile menu activates earlier */}
           <div className="hidden lg:flex items-center gap-8 xl:gap-10">
             {/* Links */}
             <div className="flex items-center gap-5 xl:gap-7">
@@ -89,7 +93,7 @@ export function Navigation() {
 
               {/* CTA */}
               <Button
-                onClick={() => scrollToSection("#register")}
+                onClick={scrollToPricing}
                 className="h-11 px-5 xl:px-6 text-sm xl:text-base whitespace-nowrap bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/20"
               >
                 Register Now
@@ -98,7 +102,6 @@ export function Navigation() {
           </div>
 
           {/* MOBILE / TABLET NAV */}
-          {/* Shows below lg */}
           <div className="flex lg:hidden items-center gap-2 sm:gap-3">
             {/* Theme */}
             <button
@@ -150,7 +153,7 @@ export function Navigation() {
 
           <div className="pt-3">
             <Button
-              onClick={() => scrollToSection("#register")}
+              onClick={scrollToPricing}
               className="w-full h-12 text-base font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
             >
               Register Now

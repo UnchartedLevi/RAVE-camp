@@ -24,10 +24,10 @@ export default function App() {
         <Hero />
         <About />
         <Speakers />
-        <Programme />
-        <Registration />
+        {/* <Programme /> */}
+        {/* <Registration /> */}
         <Pricing />
-        <LiveFeatures />
+        {/* <LiveFeatures /> */}
         {/* TODO: Re-enable after Day 1 */}
         {/* <Media /> */}
         <Sponsors />

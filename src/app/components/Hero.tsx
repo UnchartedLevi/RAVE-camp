@@ -104,7 +104,8 @@ export function Hero() {
             className="flex flex-col sm:flex-row gap-6 justify-center mb-20"
           >
             <Button
-              onClick={scrollToRegister}
+              onClick={() => document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' })}
+
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-10 py-7 h-auto shadow-2xl shadow-purple-500/30 group"
             >

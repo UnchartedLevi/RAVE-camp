@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
-import { Check, Zap, Users, Crown } from "lucide-react";
-import { Button } from "./ui/button";
+import { Check, Zap, Users, Crown, ArrowRight, Ticket } from "lucide-react";
 
 export function Pricing() {
   const plans = [
@@ -60,13 +59,6 @@ export function Pricing() {
       gradient: "from-emerald-600 to-teal-600",
     },
   ];
-
-  const scrollToRegister = () => {
-    const element = document.querySelector("#register");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <section
@@ -149,7 +141,7 @@ export function Pricing() {
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-7">
+                <ul className="space-y-3">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
@@ -159,17 +151,6 @@ export function Pricing() {
                     </li>
                   ))}
                 </ul>
-
-                {/* Button */}
-                <Button
-                  onClick={scrollToRegister}
-                  className={`w-full h-11 sm:h-12 text-sm sm:text-base font-bold rounded-xl ${plan.popular
-                      ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/20"
-                      : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                >
-                  Select this Plan
-                </Button>
               </motion.div>
             ))}
           </div>
@@ -220,7 +201,7 @@ export function Pricing() {
               </div>
 
               {/* Features */}
-              <ul className="space-y-4 mb-10">
+              <ul className="space-y-4">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
@@ -230,19 +211,55 @@ export function Pricing() {
                   </li>
                 ))}
               </ul>
-
-              <Button
-                onClick={scrollToRegister}
-                className={`w-full h-14 text-base font-bold rounded-xl ${plan.popular
-                    ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/20"
-                    : "bg-muted text-foreground hover:bg-muted/80"
-                  }`}
-              >
-                Select this Plan
-              </Button>
             </motion.div>
           ))}
         </div>
+
+        {/* PROCEED TO PAYMENT CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-14 sm:mt-16 lg:mt-20 flex justify-center"
+        >
+          <div className="relative w-full max-w-2xl rounded-3xl border border-purple-500/30 bg-card p-8 sm:p-10 shadow-2xl shadow-purple-500/10 text-center overflow-hidden">
+            {/* Inner glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-transparent to-pink-600/10 pointer-events-none rounded-3xl" />
+
+            <div className="relative z-10">
+              {/* Icon */}
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-purple-500/30">
+                <Ticket className="w-8 h-8 text-white" />
+              </div>
+
+              <h3 className="text-2xl sm:text-3xl font-black mb-3 tracking-tight">
+                Ready to Secure Your Spot?
+              </h3>
+
+              <p className="text-sm sm:text-base text-muted-foreground mb-7 max-w-md mx-auto">
+                Tickets are limited. Click below to complete your purchase
+                securely via our ticketing platform and lock in your chosen plan.
+              </p>
+
+              {/* CTA Button */}
+              <a
+                href="#"
+                // replace href="#" with your Tix.to link when ready
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all duration-300"
+              >
+                <Ticket className="w-5 h-5" />
+                Proceed to Payment
+                <ArrowRight className="w-5 h-5" />
+              </a>
+
+              <p className="text-xs text-muted-foreground mt-5 opacity-70">
+                🔒 Secure checkout · Instant confirmation · All plans available
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
