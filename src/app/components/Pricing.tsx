@@ -244,7 +244,8 @@ export function Pricing() {
 
               {/* CTA Button */}
               <a
-                href="#"
+                href='https://tix.africa/discover/rave-bootcamp'
+                target="blank"
                 // replace href="#" with your Tix.to link when ready
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all duration-300"
               >
