@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import bimpeImage from '../../assets/bimpe.jpeg';
 import alexImage from '../../assets/alex.jpeg';
 import opeImage from '../../assets/woman2.jpg';
-import samImage from '../../assets/samueal.jpg';
+import samImage from '../../assets/samueal.jpeg';
 
 export function Speakers() {
   const speakers = [

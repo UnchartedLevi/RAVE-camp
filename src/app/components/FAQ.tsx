@@ -16,7 +16,7 @@ const faqData = [
             },
             {
                 question: 'When and where does the camp take place?',
-                answer: 'R.A.V.E. Camp 2026 runs from July 15-20, 2026, in Lagos, Nigeria. We also offer limited virtual participation options for international participants who cannot attend in person.',
+                answer: 'R.A.V.E. Camp 2026 runs from June 14-20, 2026, in Lagos, Nigeria. We also offer limited virtual participation options for international participants who cannot attend in person.',
             },
             {
                 question: 'What is the camp schedule like?',
@@ -33,7 +33,7 @@ const faqData = [
             },
             {
                 question: 'What are the registration fees?',
-                answer: 'We offer three pricing tiers: Early Bird (₦45,000 - until April 15), Standard (₦55,000 - until May 30), and Group Rate (₦40,000 per person for groups of 5+). Limited scholarships are available for qualified applicants.',
+                answer: 'We offer three pricing tiers: Early Bird (₦120,000), Standard (₦150,000), and Group of 5 Rate (₦650,000). Limited scholarships are available for qualified applicants.',
             },
             {
                 question: 'What payment methods do you accept?',
