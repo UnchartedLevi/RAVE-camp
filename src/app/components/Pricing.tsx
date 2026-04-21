@@ -1,267 +1,98 @@
-import { motion } from "motion/react";
-import { Check, Zap, Users, Crown, ArrowRight, Ticket } from "lucide-react";
+
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Check, Zap, Users, Crown, ArrowRight, Ticket, X } from "lucide-react";
+import { Registration } from "./Registration.tsx";
 
 export function Pricing() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
   const plans = [
-    {
-      name: "Earlybird",
-      icon: Zap,
-      price: "₦120,000",
-      deadline: "Limited Early Offer",
-      description: "Early registration discount",
-      features: [
-        "Full 6-day camp access",
-        "All workshops & sessions",
-        "Accommodation included",
-        "Meals & refreshments",
-        "Welcome kit & materials",
-        "Certificate of completion",
-        "Access to alumni network",
-      ],
-      popular: true,
-      gradient: "from-purple-600 to-pink-600",
-    },
-    {
-      name: "Single",
-      icon: Users,
-      price: "₦150,000",
-      deadline: "Individual Registration",
-      description: "Standard single participant",
-      features: [
-        "Full 6-day camp access",
-        "All workshops & sessions",
-        "Accommodation included",
-        "Meals & refreshments",
-        "Welcome kit & materials",
-        "Certificate of completion",
-        "Access to alumni network",
-      ],
-      popular: false,
-      gradient: "from-blue-600 to-cyan-600",
-    },
-    {
-      name: "Group of 5",
-      icon: Crown,
-      price: "₦650,000",
-      deadline: "Group Registration (5+ people)",
-      description: "Save together with your group",
-      features: [
-        "Full 6-day camp access for 5 people",
-        "All workshops & sessions",
-        "Accommodation included",
-        "Meals & refreshments",
-        "Welcome kit & materials",
-        "Certificate of completion",
-        "Access to alumni network",
-        "Group coordination support",
-      ],
-      popular: false,
-      gradient: "from-emerald-600 to-teal-600",
-    },
+    { name: "Earlybird", icon: Zap, price: "₦120,000", deadline: "Limited Early Offer", description: "Early registration discount", popular: true, gradient: "from-purple-600 to-pink-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
+    { name: "Single", icon: Users, price: "₦150,000", deadline: "Individual Registration", description: "Standard single participant", popular: false, gradient: "from-blue-600 to-cyan-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
+    { name: "Group of 5", icon: Crown, price: "₦650,000", deadline: "Group Registration (5+ people)", description: "Save together with your group", popular: false, gradient: "from-emerald-600 to-teal-600", features: ["Full 6-day camp access for 5 people","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network","Group coordination support"] },
   ];
 
   return (
-    <section
-      id="pricing"
-      className="py-24 sm:py-28 lg:py-36 bg-background relative overflow-hidden"
-    >
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-purple-500/5 to-background pointer-events-none" />
+    <>
+      <section id="pricing" className="py-24 sm:py-28 lg:py-36 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-purple-500/5 to-background pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-14 sm:mb-18 lg:mb-20"
-        >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black tracking-tight mb-5">
-            Investment Options
-          </h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-14">
+            <h2 className="text-5xl font-black mb-4">Investment Options</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">Choose the package that works best for you.</p>
+          </div>
 
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-            Choose the package that works best for you. Every plan includes full
-            camp access and premium experience benefits.
-          </p>
-
-          <p className="text-sm sm:text-base text-purple-500 font-semibold">
-            💳 Credit Card • Bank Transfer • Mobile Money
-          </p>
-        </motion.div>
-
-        {/* MOBILE + TABLET CAROUSEL */}
-        <div className="xl:hidden">
-          <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-1 scrollbar-hide">
-            {plans.map((plan, index) => (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 35 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.1 }}
-                className={`snap-center shrink-0 w-[88%] sm:w-[70%] md:w-[48%] lg:w-[42%]
-                  relative rounded-3xl border bg-card p-6 sm:p-7 shadow-lg transition-all duration-300
-                  ${plan.popular
-                    ? "border-purple-500/50 shadow-purple-500/10"
-                    : "border-border"
-                  }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-[11px] sm:text-xs font-bold text-white shadow-lg whitespace-nowrap">
-                    MOST POPULAR
-                  </div>
-                )}
-
-                {/* Icon */}
-                <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-5`}
-                >
+          <div className="grid xl:grid-cols-3 gap-8">
+            {plans.map((plan) => (
+              <div key={plan.name} className="rounded-3xl border bg-card p-8 shadow-xl">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-5`}>
                   <plan.icon className="w-7 h-7 text-white" />
                 </div>
-
-                {/* Title */}
-                <h3 className="text-2xl sm:text-3xl font-black mb-2">
-                  {plan.name}
-                </h3>
-
-                <p className="text-sm sm:text-base text-muted-foreground mb-5">
-                  {plan.description}
-                </p>
-
-                {/* Price */}
-                <div className="mb-6">
-                  <p className="text-3xl sm:text-4xl font-black">
-                    {plan.price}
-                  </p>
-                  <p className="text-sm text-purple-500 font-semibold mt-1">
-                    {plan.deadline}
-                  </p>
-                </div>
-
-                {/* Features */}
-                <ul className="space-y-3">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                      <span className="text-sm sm:text-base text-muted-foreground">
-                        {feature}
-                      </span>
+                <h3 className="text-2xl font-black">{plan.name}</h3>
+                <p className="text-4xl font-black my-4">{plan.price}</p>
+                <ul className="space-y-3 mb-6">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex gap-2 text-sm text-muted-foreground">
+                      <Check className="w-4 h-4 text-green-500 mt-0.5" /> {f}
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </div>
 
-        {/* LARGE SCREEN GRID */}
-        <div className="hidden xl:grid grid-cols-3 gap-8">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className={`relative rounded-3xl border bg-card p-10 2xl:p-12 shadow-xl transition-all duration-300 hover:shadow-2xl ${plan.popular
-                  ? "border-purple-500/50 hover:shadow-purple-500/10"
-                  : "border-border"
-                }`}
+          <div className="mt-16 flex justify-center">
+            <button
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold shadow-lg hover:scale-105 transition"
             >
-              {plan.popular && (
-                <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-sm font-bold text-white shadow-lg">
-                  MOST POPULAR
-                </div>
-              )}
-
-              {/* Icon */}
-              <div
-                className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-7`}
-              >
-                <plan.icon className="w-8 h-8 text-white" />
-              </div>
-
-              <h3 className="text-3xl font-black mb-3">{plan.name}</h3>
-
-              <p className="text-base text-muted-foreground mb-7">
-                {plan.description}
-              </p>
-
-              {/* Price */}
-              <div className="mb-8">
-                <p className="text-5xl 2xl:text-6xl font-black">
-                  {plan.price}
-                </p>
-                <p className="text-sm text-purple-500 font-semibold mt-2">
-                  {plan.deadline}
-                </p>
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-4">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                    <span className="text-base text-muted-foreground">
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* PROCEED TO PAYMENT CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-14 sm:mt-16 lg:mt-20 flex justify-center"
-        >
-          <div className="relative w-full max-w-2xl rounded-3xl border border-purple-500/30 bg-card p-8 sm:p-10 shadow-2xl shadow-purple-500/10 text-center overflow-hidden">
-            {/* Inner glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-transparent to-pink-600/10 pointer-events-none rounded-3xl" />
-
-            <div className="relative z-10">
-              {/* Icon */}
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-purple-500/30">
-                <Ticket className="w-8 h-8 text-white" />
-              </div>
-
-              <h3 className="text-2xl sm:text-3xl font-black mb-3 tracking-tight">
-                Ready to Secure Your Spot?
-              </h3>
-
-              <p className="text-sm sm:text-base text-muted-foreground mb-7 max-w-md mx-auto">
-                Tickets are limited. Click below to complete your purchase
-                securely via our ticketing platform and lock in your chosen plan.
-              </p>
-
-              {/* CTA Button */}
-              <a
-                href='https://tix.africa/discover/rave-bootcamp'
-                target="blank"
-                // replace href="#" with your Tix.to link when ready
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base sm:text-lg shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                <Ticket className="w-5 h-5" />
-                Proceed to Payment
-                <ArrowRight className="w-5 h-5" />
-              </a>
-
-              <p className="text-xs text-muted-foreground mt-5 opacity-70">
-                🔒 Secure checkout · Instant confirmation · All plans available
-              </p>
-            </div>
+              <Ticket className="w-5 h-5" />
+              Proceed to Payment
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-      </div>
-    </section>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-3xl bg-background border shadow-2xl"
+            >
+              <button
+                onClick={() => setOpen(false)}
+                className="absolute top-4 right-4 z-50 p-2 rounded-full bg-muted hover:bg-muted/80"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <Registration />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
+
