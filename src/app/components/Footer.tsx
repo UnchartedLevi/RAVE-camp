@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, M
 export function Footer() {
   const footerLinks = {
     '': ['', '', '', ''],
-    'Resources': ['Travel Guide', 'Accommodation','Code of Conduct'],
+    'Resources': ['Travel Guide', 'Accommodation', 'Code of Conduct'],
     'Legal': ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Refund Policy'],
   };
 
@@ -24,10 +24,10 @@ export function Footer() {
             {/* add the icon here */}
             <div>
               <img
-              src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
-              alt="RAVE Camp"
-              className="h-12 sm:h-14 lg:h-16 w-auto"
-            />
+                src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
+                alt="RAVE Camp"
+                className="h-16 sm:h-20 lg:h-24 w-auto"
+              />
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">
               Africa's premier youth leadership movement. Empowering the next generation of changemakers through transformative experiences.
