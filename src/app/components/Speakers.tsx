@@ -21,6 +21,13 @@ export function Speakers() {
       image: alexImage,
       bio: 'Alex Onyia is a business executive currently serving as CEO at Educare, likely focused on education-related services or technology. As the top leader of the organization, he\'s responsible for driving strategy, growth, and overall direction of the company.',
     },
+    // {
+    //   name: 'Vector',
+    //   title: 'Nigerian Rapper & Singer-Songwriter',
+    //   expertise: 'Music & Creative Arts',
+    //   image: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1700000000/vector-speaker.jpg',
+    //   bio: 'Vector is a acclaimed Nigerian rapper and singer-songwriter known for his sharp lyricism and versatile style. He brings a unique creative energy to RAVE Camp, inspiring young participants to find their voice and express themselves through the power of storytelling and the arts.',
+    // },
     {
       name: 'Opeyemi Akintunde',
       title: 'Storyteller. Creative Writer & Filmmaker',
@@ -35,6 +42,7 @@ export function Speakers() {
       image: samImage,
       bio: 'Samuel Maradesa is a multi-credentialed professional holding certifications in counselling (MCASSON), information systems auditing (CISA), and public administration (APA). He wears several hats as a counsellor, author, speaker, and teacher — suggesting a career centered around personal development, education, and advisory work.',
     },
+    
 
   ];
 
