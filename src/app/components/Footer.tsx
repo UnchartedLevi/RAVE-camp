@@ -2,13 +2,12 @@ import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, M
 
 export function Footer() {
   const footerLinks = {
-    'Quick Links': ['About', 'Speakers', 'Programme', 'Pricing', 'Register'],
-    'Resources': ['FAQ', 'Travel Guide', 'Accommodation', 'Visa Information', 'Code of Conduct'],
+    '': ['', '', '', ''],
+    'Resources': ['Travel Guide', 'Accommodation','Code of Conduct'],
     'Legal': ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Refund Policy'],
   };
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
@@ -22,9 +21,14 @@ export function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-4">
-              R.A.V.E.<span className="text-purple-500">Camp</span>
-            </h3>
+            {/* add the icon here */}
+            <div>
+              <img
+              src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
+              alt="RAVE Camp"
+              className="h-12 sm:h-14 lg:h-16 w-auto"
+            />
+            </div>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">
               Africa's premier youth leadership movement. Empowering the next generation of changemakers through transformative experiences.
             </p>
