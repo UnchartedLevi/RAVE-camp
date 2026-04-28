@@ -10,7 +10,7 @@ import {
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useRef } from "react";
 import teen from '../../assets/teens1.jpg';
-import teen1 from '../../assets/teens2.jpg';
+import teen1 from '../../assets/ten.jpeg';
 
 export function About() {
   const ref = useRef(null);
