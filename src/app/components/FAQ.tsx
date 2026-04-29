@@ -12,7 +12,7 @@ const faqData = [
             },
             {
                 question: 'Who can attend the camp?',
-                answer: 'The camp is open to youth aged 13-19 from all countries. Participants should be passionate about personal growth, leadership, and making a positive impact in their communities. No prior leadership experience is required.',
+                answer: 'The camp is open to youth aged 11-19 from all countries. Participants should be passionate about personal growth, leadership, and making a positive impact in their communities. No prior leadership experience is required.',
             },
             {
                 question: 'When and where does the camp take place?',
