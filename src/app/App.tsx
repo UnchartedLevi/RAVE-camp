@@ -34,7 +34,7 @@ export default function App() {
         {/* TODO: Re-enable after Day 1 */}
         {/* <Testimonials /> */}
         <FAQ />
-        <Newsletter />
+        {/* <Newsletter /> */}
         <Footer />
       </div>
     </ThemeProvider>
