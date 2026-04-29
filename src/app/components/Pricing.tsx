@@ -50,7 +50,7 @@ export function Pricing() {
             ))}
           </div>
             {/* payment form */}
-          <div className="mt-16 flex justify-center">
+          {/* <div className="mt-16 flex justify-center">
             <button
               onClick={() => setOpen(true)}
               className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold shadow-lg hover:scale-105 transition"
@@ -59,7 +59,7 @@ export function Pricing() {
               Proceed to Payment
               <ArrowRight className="w-5 h-5" />
             </button>
-          </div>
+          </div> */}
         </div>
       </section>
 
