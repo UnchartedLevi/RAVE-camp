@@ -29,20 +29,20 @@ const faqData = [
         questions: [
             {
                 question: 'How do I register for the camp?',
-                answer: 'Click the "Register Now" button on our website and complete the multi-step registration form. You\'ll need to provide personal details, emergency contact information, and medical information. Parents/guardians must approve registration for participants under 18.',
+                answer: 'Click the "Register Now" button on our website and complete the multi-step registration form. You\'ll need to provide personal details, emergency contact information, and medical information. Parents/guardians must approve registration for participants.',
             },
             {
                 question: 'What are the registration fees?',
-                answer: 'We offer three pricing tiers: Early Bird (₦120,000), Standard (₦150,000), and Group of 5 Rate (₦650,000). Limited scholarships are available for qualified applicants.',
+                answer: 'We offer three pricing tiers: Early Bird (₦120,000), Standard (₦150,000), and Group of 5 Rate (₦650,000). Early Bird pricing is available for a limited time, so we encourage you to register early to take advantage of the discount. All fees include access to all camp activities, meals, and materials.',
             },
             {
                 question: 'What payment methods do you accept?',
-                answer: 'We accept payments via Paystack and Flutterwave, including bank transfers, debit cards, and mobile money. International participants can pay via PayPal or bank wire transfer.',
+                answer: 'We accept payments via Paystack, including bank transfers, debit cards, and mobile money.',
             },
-            {
-                question: 'Is there a refund policy?',
-                answer: 'Full refunds are available if you cancel 30+ days before camp starts. Cancellations 15-29 days before receive 50% refund. No refunds are given for cancellations within 14 days of camp start date.',
-            },
+            // {
+            //     question: 'Is there a refund policy?',
+            //     answer: 'Full refunds are available if you cancel 30+ days before camp starts. Cancellations 15-29 days before receive 50% refund. No refunds are given for cancellations within 14 days of camp start date.',
+            // },
         ],
     },
     {
@@ -117,7 +117,7 @@ const faqData = [
             },
             {
                 question: 'Who do I contact with questions?',
-                answer: 'Email us at info@ravecamp.org, call +234 (0) 123-4567, or WhatsApp us. Our parent information page also has detailed FAQs and resources.',
+                answer: 'Email us at info@ravecamp.org, call +234 806 306 2447, or WhatsApp us. Our parent information page also has detailed FAQs and resources.',
             },
         ],
     },
