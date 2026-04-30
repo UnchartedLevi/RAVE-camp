@@ -39,9 +39,9 @@ export function Footer() {
                 <span>hello@ravecamp.org</span>
               </a>
 
-              <a href="tel:+233123456789" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+              <a href="tel:+2348063062447" className="flex items-center gap-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
                 <Phone className="w-5 h-5" />
-                <span>+233 123 456 789</span>
+                <span>+234 806 306 2447</span>
               </a>
 
               <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
@@ -90,7 +90,7 @@ export function Footer() {
 
           {/* WhatsApp */}
           <a
-            href="https://wa.me/234123456789"
+            href="https://wa.me/2348063062447"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 rounded-full text-white font-medium transition-colors"
