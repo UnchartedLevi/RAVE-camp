@@ -42,8 +42,6 @@ export function Speakers() {
       image: samImage,
       bio: 'Samuel Maradesa is a multi-credentialed professional holding certifications in counselling (MCASSON), information systems auditing (CISA), and public administration (APA). He wears several hats as a counsellor, author, speaker, and teacher — suggesting a career centered around personal development, education, and advisory work.',
     },
-    
-
   ];
 
   return (

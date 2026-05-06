@@ -95,10 +95,8 @@ declare global {
 }
 
 // ─── Constants ────────────────────────────────────────────────────
-const APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbwYH6AM7EOOR3tMrzHLAIvIAblk70wkbwNwHBva_VTVnXQUU6BsnIuuo5p0P2kuMJLg/exec';
-
-const PAYSTACK_PUBLIC_KEY = 'pk_live_2e591f6072df1c4a685f45196cf64b96fddf28ba';
+const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL;
+const PAYSTACK_PUBLIC_KEY = import.meta.env.VITE_PAYSTACK_KEY;
 
 const TICKET_OPTIONS = [
   {
