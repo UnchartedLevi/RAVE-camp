@@ -77,7 +77,9 @@ const EMPTY_CHILD: ChildInfo = {
 };
 
 // ─── Constants ────────────────────────────────────────────────────
-const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL;
+// Replace your broken URL with ONE valid Apps Script deployment URL.
+const APPS_SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbwtmqJvIGylpvoiS10kFcEt83XkJv4LTzaIpyBizVRkjqEjH5NiF549hy6L13jIqBCv/exec';
 
 const TICKET_OPTIONS = [
   {
@@ -376,36 +378,54 @@ export function Registration() {
     });
 
     const params = new URLSearchParams({ ...base, ...childrenFlat });
-    try {
-      await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-    } catch (err) {
-      console.error('Sheet log error:', err);
-    }
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: params,
+    });
   };
+
+
 
   const onSubmit = async (data: FormData) => {
     if (!selectedTicket) { setSubmitError(true); return; }
     setShowPaymentDetails(true);
   };
-
   const handleReceiptSubmit = async (data: FormData) => {
     if (!receiptFile) {
       setReceiptError('Please upload your payment receipt.');
       return;
     }
+
+    if (receiptFile.size > 5 * 1024 * 1024) {
+      setReceiptError('Receipt file must be 5MB or less.');
+      return;
+    }
+
     setIsLoading(true);
     setReceiptError(null);
 
-    const base64 = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve((reader.result as string).split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(receiptFile);
-    });
+    try {
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          resolve(result.includes(',') ? result.split(',')[1] : result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(receiptFile);
+      });
 
-    const extraChildren = selectedTicket?.groupTicket ? groupChildren : undefined;
-    await logToSheet(data, 'pending', extraChildren, base64, receiptFile.name);
-    window.location.href = '/?payment=success';
+      const extraChildren = selectedTicket?.groupTicket ? groupChildren : undefined;
+      await logToSheet(data, 'pending', extraChildren, base64, receiptFile.name);
+
+      window.location.href = '/?payment=success';
+    } catch (err) {
+      console.error('Submission error:', err);
+      setReceiptError('Submission failed. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   const stepLabels = selectedTicket?.groupTicket
@@ -593,340 +613,342 @@ export function Registration() {
         {/* FORM */}
         {!showPaymentDetails && (
           <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="rounded-3xl p-5 sm:p-8 lg:p-10 border shadow-xl bg-white/95 dark:bg-zinc-900/95 border-zinc-200 dark:border-zinc-800 backdrop-blur-md transition-colors duration-300"
-        >
+            onSubmit={handleSubmit(onSubmit)}
+            className="rounded-3xl p-5 sm:p-8 lg:p-10 border shadow-xl bg-white/95 dark:bg-zinc-900/95 border-zinc-200 dark:border-zinc-800 backdrop-blur-md transition-colors duration-300"
+          >
 
-          {/* STEP 1 — Parent / Guardian */}
-          <div className={step === 1 ? 'block' : 'hidden'}>
-            <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
-              <h3 className="text-2xl font-black text-foreground">Parent / Guardian Information</h3>
+            {/* STEP 1 — Parent / Guardian */}
+            <div className={step === 1 ? 'block' : 'hidden'}>
+              <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <h3 className="text-2xl font-black text-foreground">Parent / Guardian Information</h3>
 
-              <div className="grid md:grid-cols-2 gap-5">
-                <div><Label className="mb-2 block">First Name</Label><Textarea {...register('parentFirstName', { required: 'First name is required' })} placeholder="Jane" className={singleLineClass} /> {errors.parentFirstName && <p className="text-red-500 text-xs mt-1">{errors.parentFirstName.message}</p>} </div>
-                <div><Label className="mb-2 block">Last Name</Label><Textarea {...register('parentLastName', { required: 'Last name is required' })} placeholder="Doe" className={singleLineClass} /> {errors.parentLastName && <p className="text-red-500 text-xs mt-1">{errors.parentLastName.message}</p>} </div>
-              </div>
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div><Label className="mb-2 block">First Name</Label><Textarea {...register('parentFirstName', { required: 'First name is required' })} placeholder="Jane" className={singleLineClass} /> {errors.parentFirstName && <p className="text-red-500 text-xs mt-1">{errors.parentFirstName.message}</p>} </div>
+                  <div><Label className="mb-2 block">Last Name</Label><Textarea {...register('parentLastName', { required: 'Last name is required' })} placeholder="Doe" className={singleLineClass} /> {errors.parentLastName && <p className="text-red-500 text-xs mt-1">{errors.parentLastName.message}</p>} </div>
+                </div>
 
-              <div><Label className="mb-2 block">Email Address</Label><Textarea {...register('parentEmail', { required: 'Enter a valid Email' })} placeholder="jane@example.com" className={singleLineClass} /> {errors.parentEmail && <p className="text-red-500 text-xs mt-1">{errors.parentEmail.message}</p>} </div>
+                <div><Label className="mb-2 block">Email Address</Label><Textarea {...register('parentEmail', { required: 'Enter a valid Email' })} placeholder="jane@example.com" className={singleLineClass} /> {errors.parentEmail && <p className="text-red-500 text-xs mt-1">{errors.parentEmail.message}</p>} </div>
 
-              <div className="grid md:grid-cols-2 gap-5">
-                <div><Label className="mb-2 block">Phone Number</Label><Textarea {...register('parentPhone', { required: 'Field required' })} placeholder="+234..." className={singleLineClass} /> {errors.parentPhone && <p className="text-red-500 text-xs mt-1">{errors.parentPhone.message}</p>} </div>
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div><Label className="mb-2 block">Phone Number</Label><Textarea {...register('parentPhone', { required: 'Field required' })} placeholder="+234..." className={singleLineClass} /> {errors.parentPhone && <p className="text-red-500 text-xs mt-1">{errors.parentPhone.message}</p>} </div>
+                  <div>
+                    <Label className="mb-2 block">Relationship</Label>
+                    <Controller
+                      name="relationship"
+                      control={control}
+                      rules={{ required: 'Please select your relationship' }}
+                      render={({ field }) => (
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger className="h-12"><SelectValue placeholder="Select relationship" /></SelectTrigger>
+                          <SelectContent className="bg-white dark:bg-black">
+                            <SelectItem value="mother">Mother</SelectItem>
+                            <SelectItem value="father">Father</SelectItem>
+                            <SelectItem value="guardian">Guardian</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )} />
+                  </div>
+                </div>
+
+                {validationError && (
+                  <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {validationError}
+                  </div>
+                )}
+
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div><Label className="mb-2 block">Emergency Contact</Label><Textarea {...register('emergencyContact')} placeholder="Full name" className={singleLineClass} /></div>
+                  <div><Label className="mb-2 block">Emergency Phone</Label><Textarea {...register('emergencyPhone')} placeholder="+234..." className={singleLineClass} /></div>
+                </div>
+
+                <div className="flex justify-end pt-3">
+                  <Button type="button" onClick={async () => {
+                    const valid = await trigger(['parentFirstName', 'parentLastName', 'parentEmail', 'parentPhone', 'relationship', 'emergencyContact', 'emergencyPhone']);
+                    if (valid) { setValidationError(null); setStep(2); }
+                  }} className="bg-gradient-to-r from-purple-600 to-pink-600">
+                    Next <ChevronRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* STEP 2 — Child 1 */}
+            <div className={step === 2 ? 'block' : 'hidden'}>
+              <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
                 <div>
-                  <Label className="mb-2 block">Relationship</Label>
-                  <Controller
-                    name="relationship"
-                    control={control}
-                    rules={{ required: 'Please select your relationship' }}
-                    render={({ field }) => (
+                  <h3 className="text-2xl font-black">Child Information</h3>
+                  {selectedTicket?.groupTicket && (
+                    <p className="text-sm text-muted-foreground mt-1">This is Child 1 — you'll add the remaining 4 children in a later step.</p>
+                  )}
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div><Label className="mb-2 block">First Name</Label><Textarea {...register('childFirstName', { required: 'Field is required' })} className={singleLineClass} /> {errors.childFirstName && <p className="text-red-500 text-xs mt-1">{errors.childFirstName.message}</p>} </div>
+                  <div><Label className="mb-2 block">Last Name</Label><Textarea {...register('childLastName', { required: 'Field is required' })} className={singleLineClass} /> {errors.childLastName && <p className="text-red-500 text-xs mt-1">{errors.childLastName.message}</p>} </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div><Label className="mb-2 block">Age</Label><Textarea {...register('childAge', { required: 'Field is required' })} placeholder="e.g. 12" className={singleLineClass} /> {errors.childAge && <p className="text-red-500 text-xs mt-1">{errors.childAge.message}</p>} </div>
+                  <div>
+                    <Label className="mb-2 block">Gender</Label>
+                    <Controller name="childGender" control={control} rules={{ required: 'Please select gender' }} render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="h-12"><SelectValue placeholder="Select relationship" /></SelectTrigger>
+                        <SelectTrigger className="h-12"><SelectValue placeholder="Select gender" /></SelectTrigger>
                         <SelectContent className="bg-white dark:bg-black">
-                          <SelectItem value="mother">Mother</SelectItem>
-                          <SelectItem value="father">Father</SelectItem>
-                          <SelectItem value="guardian">Guardian</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
                         </SelectContent>
                       </Select>
                     )} />
-                </div>
-              </div>
-
-              {validationError && (
-                <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {validationError}
-                </div>
-              )}
-
-              <div className="grid md:grid-cols-2 gap-5">
-                <div><Label className="mb-2 block">Emergency Contact</Label><Textarea {...register('emergencyContact')} placeholder="Full name" className={singleLineClass} /></div>
-                <div><Label className="mb-2 block">Emergency Phone</Label><Textarea {...register('emergencyPhone')} placeholder="+234..." className={singleLineClass} /></div>
-              </div>
-
-              <div className="flex justify-end pt-3">
-                <Button type="button" onClick={async () => {
-                  const valid = await trigger(['parentFirstName', 'parentLastName', 'parentEmail', 'parentPhone', 'relationship', 'emergencyContact', 'emergencyPhone']);
-                  if (valid) { setValidationError(null); setStep(2); }
-                }} className="bg-gradient-to-r from-purple-600 to-pink-600">
-                  Next <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* STEP 2 — Child 1 */}
-          <div className={step === 2 ? 'block' : 'hidden'}>
-            <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black">Child Information</h3>
-                {selectedTicket?.groupTicket && (
-                  <p className="text-sm text-muted-foreground mt-1">This is Child 1 — you'll add the remaining 4 children in a later step.</p>
-                )}
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5">
-                <div><Label className="mb-2 block">First Name</Label><Textarea {...register('childFirstName', { required: 'Field is required' })} className={singleLineClass} /> {errors.childFirstName && <p className="text-red-500 text-xs mt-1">{errors.childFirstName.message}</p>} </div>
-                <div><Label className="mb-2 block">Last Name</Label><Textarea {...register('childLastName', { required: 'Field is required' })} className={singleLineClass} /> {errors.childLastName && <p className="text-red-500 text-xs mt-1">{errors.childLastName.message}</p>} </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5">
-                <div><Label className="mb-2 block">Age</Label><Textarea {...register('childAge', { required: 'Field is required' })} placeholder="e.g. 12" className={singleLineClass} /> {errors.childAge && <p className="text-red-500 text-xs mt-1">{errors.childAge.message}</p>} </div>
-                <div>
-                  <Label className="mb-2 block">Gender</Label>
-                  <Controller name="childGender" control={control} rules={{ required: 'Please select gender' }} render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="h-12"><SelectValue placeholder="Select gender" /></SelectTrigger>
-                      <SelectContent className="bg-white dark:bg-black">
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )} />
-                </div>
-              </div>
-              {/* swiming and t-shirt size */}
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <Label className="mb-2 block">T-Shirt Size</Label>
-                  <Controller name="tshirtSize" control={control} rules={{ required: 'Please select a size' }} render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="h-12"><SelectValue placeholder="Select size" /></SelectTrigger>
-                      <SelectContent className="bg-white dark:bg-black">
-                        <SelectItem value="xs">XS</SelectItem><SelectItem value="s">S</SelectItem>
-                        <SelectItem value="m">M</SelectItem><SelectItem value="l">L</SelectItem>
-                        <SelectItem value="xl">XL</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )} />
-                </div>
-                <div>
-                  <Label className="mb-2 block">Swimming Ability</Label>
-                  <Controller name="swimmingAbility" control={control} rules={{ required: 'Please select swimming ability' }} render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="h-12"><SelectValue placeholder="Select ability" /></SelectTrigger>
-                      <SelectContent className="bg-white dark:bg-black">
-                        <SelectItem value="none">Cannot swim</SelectItem>
-                        <SelectItem value="beginner">Beginner</SelectItem>
-                        <SelectItem value="intermediate">Intermediate</SelectItem>
-                        <SelectItem value="advanced">Advanced</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )} />
-                </div>
-              </div>
-
-              {validationError && (
-                <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {validationError}
-                </div>
-              )}
-
-              <div className="flex justify-between pt-3">
-                <Button type="button" variant="outline" onClick={() => setStep(1)}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
-                <Button type="button" onClick={async () => {
-                  const valid = await trigger(['childFirstName', 'childLastName', 'childAge', 'childGender', 'tshirtSize', 'swimmingAbility']);
-                  if (valid) { setValidationError(null); setStep(3); }
-                }} className="bg-gradient-to-r from-purple-600 to-pink-600">
-                  Next <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* STEP 3 — Medical */}
-          <div className={step === 3 ? 'block' : 'hidden'}>
-            <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black">Medical &amp; Safety Information</h3>
-                {selectedTicket?.groupTicket && (
-                  <p className="text-sm text-muted-foreground mt-1">For Child 1. You'll add medical info for the other children in the next step.</p>
-                )}
-              </div>
-
-              <div><Label className="mb-2 block">Known Allergies</Label><Textarea {...register('allergies')} className="min-h-[100px]" /></div>
-              <div><Label className="mb-2 block">Current Medications</Label><Textarea {...register('medications')} /></div>
-              <div><Label className="mb-2 block">Medical Conditions</Label><Textarea {...register('medicalConditions')} /></div>
-              <div><Label className="mb-2 block">Dietary Restrictions</Label><Textarea {...register('dietaryRestrictions')} className="min-h-[100px]" /></div>
-              <div><Label className="mb-2 block">Special Needs / Accommodations</Label><Textarea {...register('specialNeeds')} /></div>
-
-              {validationError && (
-                <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {validationError}
-                </div>
-              )}
-
-              <div className="flex justify-between pt-3">
-                <Button type="button" variant="outline" onClick={() => {
-                  setValidationError(null);
-                  setStep(2);
-                }}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
-                <Button type="button" onClick={() => setStep(4)} className="bg-gradient-to-r from-purple-600 to-pink-600">Next <ChevronRight className="ml-2 w-4 h-4" /></Button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* STEP 4 — Ticket Selection */}
-          <div className={step === 4 ? 'block' : 'hidden'}>
-            <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black">Choose Your Ticket</h3>
-                <p className="text-sm text-muted-foreground mt-1">Select a ticket type — payment details will be shown next.</p>
-              </div>
-
-              <div className="grid gap-4">
-                {TICKET_OPTIONS.map((ticket) => {
-                  const Icon = ticket.icon;
-                  const isSelected = selectedTicket?.value === ticket.value;
-                  return (
-                    <motion.button
-                      key={ticket.value}
-                      type="button"
-                      onClick={() => { setSelectedTicket(ticket); setSubmitError(false); }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full text-left rounded-2xl border-2 p-5 transition-all duration-200 ${isSelected ? `${ticket.border} ${ticket.bg} shadow-md` : 'border-border hover:border-zinc-400 dark:hover:border-zinc-600'
-                        }`}
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ticket.color} flex items-center justify-center shrink-0`}>
-                            <Icon className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <p className="font-bold text-foreground text-base leading-tight">{ticket.label}</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">{ticket.description}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className={`text-lg font-black bg-gradient-to-r ${ticket.color} bg-clip-text text-transparent`}>{ticket.display}</span>
-                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? `bg-gradient-to-br ${ticket.color} border-transparent` : 'border-muted-foreground/30'
-                            }`}>
-                            {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
-
-              <AnimatePresence>
-                {submitError && (
-                  <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                    className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
-                    Please select a ticket type to continue.
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {validationError && (
-                <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {validationError}
-                </div>
-              )}
-
-              <div className="flex justify-between pt-3">
-                <Button type="button" variant="outline" onClick={() => {
-                  const err = validateStep();
-                  if (err) { setValidationError(err); return; }
-                  setValidationError(null);
-                  setStep(3);
-                }}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
-                <Button
-                  type="button"
-                  disabled={!selectedTicket}
-                  onClick={() => {
-                    if (!selectedTicket) { setSubmitError(true); return; }
-                    if (selectedTicket.groupTicket) {
-                      setStep(5);
-                    } else {
-                      handleSubmit(onSubmit)();
-                    }
-                  }}
-                  className={`bg-gradient-to-r from-purple-600 to-pink-600 px-8 transition-all duration-200 ${!selectedTicket ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
-                >
-                  {selectedTicket?.groupTicket
-                    ? <><span>Add Children Info</span><ChevronRight className="ml-2 w-4 h-4" /></>
-                    : <><span>Pay {selectedTicket?.display ?? 'Now'}</span><ChevronRight className="ml-2 w-4 h-4" /></>
-                  }
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* STEP 5 — Group Children 2–5 */}
-          <div className={step === 5 ? 'block' : 'hidden'}>
-            <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shrink-0">
-                    <UserPlus className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-2xl font-black">Children 2–5</h3>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Child 1 was captured in the previous steps. Fill in details for the remaining 4 children below.
-                </p>
-              </div>
+                {/* swiming and t-shirt size */}
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <Label className="mb-2 block">T-Shirt Size</Label>
+                    <Controller name="tshirtSize" control={control} rules={{ required: 'Please select a size' }} render={({ field }) => (
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger className="h-12"><SelectValue placeholder="Select size" /></SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-black">
+                          <SelectItem value="xs">XS</SelectItem><SelectItem value="s">S</SelectItem>
+                          <SelectItem value="m">M</SelectItem><SelectItem value="l">L</SelectItem>
+                          <SelectItem value="xl">XL</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )} />
+                  </div>
+                  <div>
+                    <Label className="mb-2 block">Swimming Ability</Label>
+                    <Controller name="swimmingAbility" control={control} rules={{ required: 'Please select swimming ability' }} render={({ field }) => (
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger className="h-12"><SelectValue placeholder="Select ability" /></SelectTrigger>
+                        <SelectContent className="bg-white dark:bg-black">
+                          <SelectItem value="none">Cannot swim</SelectItem>
+                          <SelectItem value="beginner">Beginner</SelectItem>
+                          <SelectItem value="intermediate">Intermediate</SelectItem>
+                          <SelectItem value="advanced">Advanced</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )} />
+                  </div>
+                </div>
 
-              <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl px-4 py-3">
-                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                <p className="text-sm text-foreground"><span className="font-semibold">Child 1</span> info already captured in Steps 2 &amp; 3.</p>
-              </div>
-
-              <div className="space-y-3">
-                {groupChildren.map((child, i) => (
-                  <ChildCard
-                    key={i}
-                    index={i + 2} // display as Child 2, 3, 4, 5
-                    child={child}
-                    onChange={(updated) => updateGroupChild(i, updated)}
-                  />
-                ))}
-              </div>
-
-              <AnimatePresence>
-                {submitError && (
-                  <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                    className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                {validationError && (
+                  <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
                     <AlertCircle className="w-4 h-4 shrink-0" />
-                    Payment could not be completed. Please try again.
-                  </motion.div>
+                    {validationError}
+                  </div>
                 )}
-              </AnimatePresence>
 
-              {validationError && (
-                <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  {validationError}
+                <div className="flex justify-between pt-3">
+                  <Button type="button" variant="outline" onClick={() => setStep(1)}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
+                  <Button type="button" onClick={async () => {
+                    const valid = await trigger(['childFirstName', 'childLastName', 'childAge', 'childGender', 'tshirtSize', 'swimmingAbility']);
+                    if (valid) { setValidationError(null); setStep(3); }
+                  }} className="bg-gradient-to-r from-purple-600 to-pink-600">
+                    Next <ChevronRight className="ml-2 w-4 h-4" />
+                  </Button>
                 </div>
-              )}
+              </motion.div>
+            </div>
 
-              <div className="flex justify-between pt-3">
-                <Button type="button" variant="outline" onClick={() => setStep(4)}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`bg-gradient-to-r from-purple-600 to-pink-600 px-8 transition-all duration-200 ${isLoading ? 'scale-95 opacity-80' : 'hover:scale-105'}`}
-                >
-                  {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                      </svg>
-                      Opening payment...
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2">Pay {selectedTicket?.display} <ChevronRight className="w-4 h-4" /></span>
+            {/* STEP 3 — Medical */}
+            <div className={step === 3 ? 'block' : 'hidden'}>
+              <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-black">Medical &amp; Safety Information</h3>
+                  {selectedTicket?.groupTicket && (
+                    <p className="text-sm text-muted-foreground mt-1">For Child 1. You'll add medical info for the other children in the next step.</p>
                   )}
-                </Button>
-              </div>
-            </motion.div>
-          </div>
+                </div>
+
+                <div><Label className="mb-2 block">Known Allergies</Label><Textarea {...register('allergies')} className="min-h-[100px]" /></div>
+                <div><Label className="mb-2 block">Current Medications</Label><Textarea {...register('medications')} /></div>
+                <div><Label className="mb-2 block">Medical Conditions</Label><Textarea {...register('medicalConditions')} /></div>
+                <div><Label className="mb-2 block">Dietary Restrictions</Label><Textarea {...register('dietaryRestrictions')} className="min-h-[100px]" /></div>
+                <div><Label className="mb-2 block">Special Needs / Accommodations</Label><Textarea {...register('specialNeeds')} /></div>
+
+                {validationError && (
+                  <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {validationError}
+                  </div>
+                )}
+
+                <div className="flex justify-between pt-3">
+                  <Button type="button" variant="outline" onClick={() => {
+                    setValidationError(null);
+                    setStep(2);
+                  }}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
+                  <Button type="button" onClick={() => setStep(4)} className="bg-gradient-to-r from-purple-600 to-pink-600">Next <ChevronRight className="ml-2 w-4 h-4" /></Button>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* STEP 4 — Ticket Selection */}
+            <div className={step === 4 ? 'block' : 'hidden'}>
+              <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-black">Choose Your Ticket</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Select a ticket type — payment details will be shown next.</p>
+                </div>
+
+                <div className="grid gap-4">
+                  {TICKET_OPTIONS.map((ticket) => {
+                    const Icon = ticket.icon;
+                    const isSelected = selectedTicket?.value === ticket.value;
+                    return (
+                      <motion.button
+                        key={ticket.value}
+                        type="button"
+                        onClick={() => { setSelectedTicket(ticket); setSubmitError(false); }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full text-left rounded-2xl border-2 p-5 transition-all duration-200 ${isSelected ? `${ticket.border} ${ticket.bg} shadow-md` : 'border-border hover:border-zinc-400 dark:hover:border-zinc-600'
+                          }`}
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ticket.color} flex items-center justify-center shrink-0`}>
+                              <Icon className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <p className="font-bold text-foreground text-base leading-tight">{ticket.label}</p>
+                              <p className="text-xs text-muted-foreground mt-0.5">{ticket.description}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 shrink-0">
+                            <span className={`text-lg font-black bg-gradient-to-r ${ticket.color} bg-clip-text text-transparent`}>{ticket.display}</span>
+                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? `bg-gradient-to-br ${ticket.color} border-transparent` : 'border-muted-foreground/30'
+                              }`}>
+                              {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                <AnimatePresence>
+                  {submitError && (
+                    <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                      className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      Please select a ticket type to continue.
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {validationError && (
+                  <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {validationError}
+                  </div>
+                )}
+
+                <div className="flex justify-between pt-3">
+                  <Button type="button" variant="outline" onClick={() => {
+                    const err = validateStep();
+                    if (err) { setValidationError(err); return; }
+                    setValidationError(null);
+                    setStep(3);
+                  }}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
+                  <Button
+                    type="button"
+                    disabled={!selectedTicket}
+                    onClick={() => {
+                      if (!selectedTicket) { setSubmitError(true); return; }
+                      if (selectedTicket.groupTicket) {
+                        setStep(5);
+                      } else {
+                        handleSubmit(onSubmit)();
+                      }
+                    }}
+                    className={`bg-gradient-to-r from-purple-600 to-pink-600 px-8 transition-all duration-200 ${!selectedTicket ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                  >
+                    {selectedTicket?.groupTicket
+                      ? <><span>Add Children Info</span><ChevronRight className="ml-2 w-4 h-4" /></>
+                      : <><span>Pay {selectedTicket?.display ?? 'Now'}</span><ChevronRight className="ml-2 w-4 h-4" /></>
+                    }
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* STEP 5 — Group Children 2–5 */}
+            <div className={step === 5 ? 'block' : 'hidden'}>
+              <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shrink-0">
+                      <UserPlus className="w-4 h-4 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-black">Children 2–5</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Child 1 was captured in the previous steps. Fill in details for the remaining 4 children below.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl px-4 py-3">
+                  <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <p className="text-sm text-foreground"><span className="font-semibold">Child 1</span> info already captured in Steps 2 &amp; 3.</p>
+                </div>
+
+                <div className="space-y-3">
+                  {groupChildren.map((child, i) => (
+                    <ChildCard
+                      key={i}
+                      index={i + 2} // display as Child 2, 3, 4, 5
+                      child={child}
+                      onChange={(updated) => updateGroupChild(i, updated)}
+                    />
+                  ))}
+                </div>
+
+                <AnimatePresence>
+                  {submitError && (
+                    <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                      className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      Payment could not be completed. Please try again.
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {validationError && (
+                  <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {validationError}
+                  </div>
+                )}
+
+                <div className="flex justify-between pt-3">
+                  <Button type="button" variant="outline" onClick={() => setStep(4)}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
+                  <Button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() => handleSubmit(onSubmit)()}
+                    className={`bg-gradient-to-r from-purple-600 to-pink-600 px-8 transition-all duration-200 ${isLoading ? 'scale-95 opacity-80' : 'hover:scale-105'}`}
+                  >
+
+                    {isLoading ? (
+                      <span className="flex items-center gap-2">
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                        </svg>
+                        Opening payment...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">Pay {selectedTicket?.display} <ChevronRight className="w-4 h-4" /></span>
+                    )}
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
 
           </form>
         )}
