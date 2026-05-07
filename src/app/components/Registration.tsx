@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -76,27 +76,8 @@ const EMPTY_CHILD: ChildInfo = {
   specialNeeds: '',
 };
 
-// Tell TypeScript about PaystackPop, injected by the inline script
-declare global {
-  interface Window {
-    PaystackPop: {
-      setup: (options: {
-        key: string;
-        email: string;
-        amount: number; // in kobo
-        currency: string;
-        ref: string;
-        metadata?: object;
-        callback: (response: { reference: string }) => void;
-        onClose: () => void;
-      }) => { openIframe: () => void };
-    };
-  }
-}
-
 // ─── Constants ────────────────────────────────────────────────────
 const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL;
-const PAYSTACK_PUBLIC_KEY = import.meta.env.VITE_PAYSTACK_KEY;
 
 const TICKET_OPTIONS = [
   {
@@ -294,6 +275,9 @@ export function Registration() {
   const [submitError, setSubmitError] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<typeof TICKET_OPTIONS[number] | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [receiptError, setReceiptError] = useState<string | null>(null);
 
   const [groupChildren, setGroupChildren] = useState<ChildInfo[]>([
     { ...EMPTY_CHILD },
@@ -301,16 +285,6 @@ export function Registration() {
     { ...EMPTY_CHILD },
     { ...EMPTY_CHILD },
   ]);
-
-  // Load Paystack inline script once on mount
-  useEffect(() => {
-    if (document.getElementById('paystack-inline-js')) return;
-    const script = document.createElement('script');
-    script.id = 'paystack-inline-js';
-    script.src = 'https://js.paystack.co/v1/inline.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
 
   const { register, handleSubmit, control, getValues, trigger, formState: { errors } } = useForm<FormData>({
     shouldUnregister: false,
@@ -346,7 +320,13 @@ export function Registration() {
     });
   };
 
-  const logToSheet = async (data: FormData, paymentStatus: string, extraChildren?: ChildInfo[]) => {
+  const logToSheet = async (
+    data: FormData,
+    paymentStatus: string,
+    extraChildren?: ChildInfo[],
+    receiptBase64?: string,
+    receiptFileName?: string
+  ) => {
     const child1: ChildInfo = {
       firstName: data.childFirstName,
       lastName: data.childLastName,
@@ -375,6 +355,8 @@ export function Registration() {
       amount: String(selectedTicket?.amount ?? 0),
       paymentStatus,
       totalChildren: String(allChildren.length),
+      receiptBase64: receiptBase64 ?? '',
+      receiptFileName: receiptFileName ?? '',
     };
 
     const childrenFlat: Record<string, string> = {};
@@ -401,50 +383,29 @@ export function Registration() {
     }
   };
 
-  const openPayment = (data: FormData) => {
-    if (!window.PaystackPop) {
-      setSubmitError(true);
-      console.error('Paystack script not loaded yet.');
-      setIsLoading(false);
-      return;
-    }
-
-    const extraChildren = selectedTicket?.groupTicket ? groupChildren : undefined;
-    const reference = `RAVE_${Date.now()}_${Math.floor(Math.random() * 100000)}`;
-
-    const handler = window.PaystackPop.setup({
-      key: PAYSTACK_PUBLIC_KEY,
-      email: data.parentEmail,
-      amount: selectedTicket!.amount, // kobo
-      currency: 'NGN',
-      ref: reference,
-      metadata: {
-        custom_fields: [
-          { display_name: 'Parent Name', variable_name: 'parent_name', value: `${data.parentFirstName} ${data.parentLastName}` },
-          { display_name: 'Child 1 Name', variable_name: 'child_1_name', value: `${data.childFirstName} ${data.childLastName}` },
-          { display_name: 'Ticket Type', variable_name: 'ticket_type', value: selectedTicket!.label },
-          { display_name: 'Phone', variable_name: 'phone', value: data.parentPhone },
-        ],
-      },
-      callback: (response) => {
-        logToSheet(data, `paid | ref: ${response.reference}`, extraChildren);
-        window.location.href = `/?payment=success&ref=${response.reference}`;
-      },
-      onClose: () => {
-        setIsLoading(false);
-      },
-    });
-
-    handler.openIframe();
-  };
-
   const onSubmit = async (data: FormData) => {
     if (!selectedTicket) { setSubmitError(true); return; }
+    setShowPaymentDetails(true);
+  };
+
+  const handleReceiptSubmit = async (data: FormData) => {
+    if (!receiptFile) {
+      setReceiptError('Please upload your payment receipt.');
+      return;
+    }
     setIsLoading(true);
-    setSubmitError(false);
-    const extraChildren = selectedTicket.groupTicket ? groupChildren : undefined;
-    await logToSheet(data, 'pending', extraChildren);
-    openPayment(data);
+    setReceiptError(null);
+
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve((reader.result as string).split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(receiptFile);
+    });
+
+    const extraChildren = selectedTicket?.groupTicket ? groupChildren : undefined;
+    await logToSheet(data, 'pending', extraChildren, base64, receiptFile.name);
+    window.location.href = '/?payment=success';
   };
 
   const stepLabels = selectedTicket?.groupTicket
@@ -523,8 +484,115 @@ export function Registration() {
           })}
         </div>
 
+        {showPaymentDetails && (
+          <div className="rounded-3xl p-5 sm:p-8 lg:p-10 border shadow-xl bg-white/95 
+            dark:bg-zinc-900/95 border-zinc-200 dark:border-zinc-800 backdrop-blur-md space-y-6">
+
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 
+                border border-emerald-400/30 rounded-full mb-2">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span className="text-sm font-semibold text-foreground">Almost there!</span>
+              </div>
+              <h3 className="text-2xl font-black text-foreground">Make Your Payment</h3>
+              <p className="text-sm text-muted-foreground">
+                Transfer the exact amount below to this account, then upload your receipt.
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 p-6 text-white space-y-4">
+              <p className="text-xs uppercase tracking-widest opacity-70 font-semibold">Payment Details</p>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center border-b border-white/20 pb-3">
+                  <span className="text-sm opacity-80">Bank</span>
+                  <span className="font-bold">Zenith Bank</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-white/20 pb-3">
+                  <span className="text-sm opacity-80">Account Name</span>
+                  <span className="font-bold">CELEEN Initiative</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-white/20 pb-3">
+                  <span className="text-sm opacity-80">Account Number</span>
+                  <span className="font-bold text-lg tracking-widest">1234567890</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm opacity-80">Amount</span>
+                  <span className="font-black text-xl">{selectedTicket?.display}</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-foreground">
+                Upload Payment Receipt
+              </label>
+              <div
+                className="border-2 border-dashed border-border rounded-2xl p-6 text-center 
+                  cursor-pointer hover:border-purple-400 transition-colors"
+                onClick={() => document.getElementById('receipt-upload')?.click()}
+              >
+                <input
+                  id="receipt-upload"
+                  type="file"
+                  accept="image/*,.pdf"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] ?? null;
+                    setReceiptFile(file);
+                    setReceiptError(null);
+                  }}
+                />
+                {receiptFile ? (
+                  <div className="flex items-center justify-center gap-2 text-emerald-500">
+                    <Check className="w-5 h-5" />
+                    <span className="text-sm font-semibold">{receiptFile.name}</span>
+                  </div>
+                ) : (
+                  <div className="space-y-1 text-muted-foreground">
+                    <p className="text-sm font-semibold">Click to upload receipt</p>
+                    <p className="text-xs">JPG, PNG or PDF — max 5MB</p>
+                  </div>
+                )}
+              </div>
+              {receiptError && (
+                <p className="text-red-500 text-xs mt-2 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5" /> {receiptError}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="button"
+              disabled={isLoading}
+              onClick={() => handleSubmit(handleReceiptSubmit)()}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 h-12 text-base font-bold"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                  Submitting...
+                </span>
+              ) : (
+                'Submit Registration'
+              )}
+            </Button>
+
+            <button
+              type="button"
+              onClick={() => setShowPaymentDetails(false)}
+              className="w-full text-xs text-muted-foreground hover:text-foreground text-center pt-1 transition-colors"
+            >
+              ← Go back and edit my details
+            </button>
+          </div>
+        )}
+
         {/* FORM */}
-        <form
+        {!showPaymentDetails && (
+          <form
           onSubmit={handleSubmit(onSubmit)}
           className="rounded-3xl p-5 sm:p-8 lg:p-10 border shadow-xl bg-white/95 dark:bg-zinc-900/95 border-zinc-200 dark:border-zinc-800 backdrop-blur-md transition-colors duration-300"
         >
@@ -704,7 +772,7 @@ export function Registration() {
             <motion.div initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }} className="space-y-6">
               <div>
                 <h3 className="text-2xl font-black">Choose Your Ticket</h3>
-                <p className="text-sm text-muted-foreground mt-1">Select a ticket type — a secure Paystack payment window will open.</p>
+                <p className="text-sm text-muted-foreground mt-1">Select a ticket type — payment details will be shown next.</p>
               </div>
 
               <div className="grid gap-4">
@@ -860,7 +928,8 @@ export function Registration() {
             </motion.div>
           </div>
 
-        </form>
+          </form>
+        )}
       </div>
     </section>
   );
