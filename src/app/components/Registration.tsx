@@ -93,8 +93,8 @@ const TICKET_OPTIONS = [
   {
     value: 'early_bird' as const,
     label: 'Early Bird',
-    amount: 12000000, // kobo = ₦120,000
-    display: '₦120,000',
+    amount: 10000000, // kobo = ₦100,000
+    display: '₦100,000',
     description: "Limited slots — grab yours before they're gone",
     icon: Zap,
     color: 'from-amber-500 to-orange-500',
@@ -105,8 +105,8 @@ const TICKET_OPTIONS = [
   {
     value: 'standard' as const,
     label: 'Standard Pack',
-    amount: 15000000, // kobo = ₦150,000
-    display: '₦150,000',
+    amount: 13000000, // kobo = ₦130,000
+    display: '₦130,000',
     description: 'Full camp experience for your child',
     icon: Ticket,
     color: 'from-purple-600 to-pink-600',
@@ -117,8 +117,8 @@ const TICKET_OPTIONS = [
   {
     value: 'group_of_5' as const,
     label: 'Group of 5',
-    amount: 65000000, // kobo = ₦650,000
-    display: '₦650,000',
+    amount: 55000000, // kobo = ₦550,000
+    display: '₦550,000',
     description: 'Register 5 kids together and save',
     icon: Users,
     color: 'from-emerald-500 to-teal-500',

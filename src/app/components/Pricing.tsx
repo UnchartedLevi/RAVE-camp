@@ -15,9 +15,9 @@ export function Pricing() {
   }, [open]);
 
   const plans = [
-    { name: "Earlybird", icon: Zap, price: "₦120,000", deadline: "Limited Early Offer", description: "Early registration discount", popular: true, gradient: "from-purple-600 to-pink-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
-    { name: "Single", icon: Users, price: "₦150,000", deadline: "Individual Registration", description: "Standard single participant", popular: false, gradient: "from-blue-600 to-cyan-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
-    { name: "Group of 5", icon: Crown, price: "₦650,000", deadline: "Group Registration (5+ people)", description: "Save together with your group", popular: false, gradient: "from-emerald-600 to-teal-600", features: ["Full 6-day camp access for 5 people","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network","Group coordination support"] },
+    { name: "Earlybird", icon: Zap, price: "₦100,000", deadline: "Limited Early Offer", description: "Early registration discount", popular: true, gradient: "from-purple-600 to-pink-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
+    { name: "Single", icon: Users, price: "₦130,000", deadline: "Individual Registration", description: "Standard single participant", popular: false, gradient: "from-blue-600 to-cyan-600", features: ["Full 6-day camp access","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network"] },
+    { name: "Group of 5", icon: Crown, price: "₦550,000", deadline: "Group Registration (5+ people)", description: "Save together with your group", popular: false, gradient: "from-emerald-600 to-teal-600", features: ["Full 6-day camp access for 5 people","All workshops & sessions","Accommodation included","Meals & refreshments","Welcome kit & materials","Certificate of completion","Access to alumni network","Group coordination support"] },
   ];
 
   return (
