@@ -62,6 +62,14 @@ type ChildInfo = {
   specialNeeds: string;
 };
 
+type CloudinaryUploadResponse = {
+  secure_url?: string;
+  url?: string;
+  error?: {
+    message?: string;
+  };
+};
+
 const EMPTY_CHILD: ChildInfo = {
   firstName: '',
   lastName: '',
@@ -77,9 +85,9 @@ const EMPTY_CHILD: ChildInfo = {
 };
 
 // ─── Constants ────────────────────────────────────────────────────
-// Replace your broken URL with ONE valid Apps Script deployment URL.
-const APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbwtmqJvIGylpvoiS10kFcEt83XkJv4LTzaIpyBizVRkjqEjH5NiF549hy6L13jIqBCv/exec';
+const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL;
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 const TICKET_OPTIONS = [
   {
@@ -122,6 +130,10 @@ const TICKET_OPTIONS = [
 
 const singleLineClass =
   'min-h-0 h-12 resize-none overflow-hidden leading-[2.8rem] py-0 px-3';
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phonePattern = /^\+?\d[\d\s-]{6,}$/;
+const numberPattern = /^\d+$/;
 
 const GENDER_OPTIONS = [
   { value: 'male', label: 'Male' },
@@ -224,7 +236,7 @@ function ChildCard({
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              {/* <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <Label className="mb-1.5 block text-xs">T-Shirt Size</Label>
                   <Select value={child.tshirtSize} onValueChange={(v) => set('tshirtSize', v)}>
@@ -243,7 +255,7 @@ function ChildCard({
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
+              </div> */}
 
               <div className="pt-1">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Medical &amp; Dietary</p>
@@ -278,6 +290,7 @@ export function Registration() {
   const [selectedTicket, setSelectedTicket] = useState<typeof TICKET_OPTIONS[number] | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptError, setReceiptError] = useState<string | null>(null);
 
@@ -288,7 +301,7 @@ export function Registration() {
     { ...EMPTY_CHILD },
   ]);
 
-  const { register, handleSubmit, control, getValues, trigger, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, control, getValues, trigger, reset, formState: { errors } } = useForm<FormData>({
     shouldUnregister: false,
     defaultValues: {
       parentFirstName: '',
@@ -326,9 +339,12 @@ export function Registration() {
     data: FormData,
     paymentStatus: string,
     extraChildren?: ChildInfo[],
-    receiptBase64?: string,
-    receiptFileName?: string
+    receiptLink?: string
   ) => {
+    if (!APPS_SCRIPT_URL) {
+      throw new Error('Apps Script URL is not configured.');
+    }
+
     const child1: ChildInfo = {
       firstName: data.childFirstName,
       lastName: data.childLastName,
@@ -357,8 +373,7 @@ export function Registration() {
       amount: String(selectedTicket?.amount ?? 0),
       paymentStatus,
       totalChildren: String(allChildren.length),
-      receiptBase64: receiptBase64 ?? '',
-      receiptFileName: receiptFileName ?? '',
+      receiptLink: receiptLink ?? '',
     };
 
     const childrenFlat: Record<string, string> = {};
@@ -378,12 +393,7 @@ export function Registration() {
     });
 
     const params = new URLSearchParams({ ...base, ...childrenFlat });
-
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: params,
-    });
+    await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
   };
 
 
@@ -392,6 +402,38 @@ export function Registration() {
     if (!selectedTicket) { setSubmitError(true); return; }
     setShowPaymentDetails(true);
   };
+
+  const uploadReceiptFile = async (file: File) => {
+    if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+      throw new Error('Cloudinary is not configured.');
+    }
+
+    const body = new window.FormData();
+    body.append('file', file);
+    body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
+      {
+        method: 'POST',
+        body,
+      }
+    );
+
+    const result = await response.json() as CloudinaryUploadResponse;
+
+    if (!response.ok || result.error) {
+      throw new Error(result.error?.message || 'Receipt upload failed.');
+    }
+
+    const receiptUrl = result.secure_url || result.url;
+    if (!receiptUrl) {
+      throw new Error('Cloudinary did not return a receipt URL.');
+    }
+
+    return receiptUrl;
+  };
+
   const handleReceiptSubmit = async (data: FormData) => {
     if (!receiptFile) {
       setReceiptError('Please upload your payment receipt.');
@@ -407,25 +449,35 @@ export function Registration() {
     setReceiptError(null);
 
     try {
-      const base64 = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = String(reader.result || '');
-          resolve(result.includes(',') ? result.split(',')[1] : result);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(receiptFile);
-      });
-
       const extraChildren = selectedTicket?.groupTicket ? groupChildren : undefined;
-      await logToSheet(data, 'pending', extraChildren, base64, receiptFile.name);
+      const receiptLink = await uploadReceiptFile(receiptFile);
+      await logToSheet(data, 'pending', extraChildren, receiptLink);
 
-      window.location.href = '/?payment=success';
+      setIsLoading(false);
+      setShowSuccessModal(true);
     } catch (err) {
       console.error('Submission error:', err);
-      setReceiptError('Submission failed. Please try again.');
+      setReceiptError(err instanceof Error ? err.message : 'Submission failed. Please try again.');
       setIsLoading(false);
     }
+  };
+
+  const closeSuccessModal = () => {
+    reset();
+    setStep(1);
+    setSelectedTicket(null);
+    setReceiptFile(null);
+    setReceiptError(null);
+    setSubmitError(false);
+    setValidationError(null);
+    setShowPaymentDetails(false);
+    setShowSuccessModal(false);
+    setGroupChildren([
+      { ...EMPTY_CHILD },
+      { ...EMPTY_CHILD },
+      { ...EMPTY_CHILD },
+      { ...EMPTY_CHILD },
+    ]);
   };
 
   const stepLabels = selectedTicket?.groupTicket
@@ -439,19 +491,21 @@ export function Registration() {
       if (!v.parentFirstName.trim()) return 'First name is required';
       if (!v.parentLastName.trim()) return 'Last name is required';
       if (!v.parentEmail.trim()) return 'Email is required';
+      if (!emailPattern.test(v.parentEmail.trim())) return 'Enter a valid email address';
       if (!v.parentPhone.trim()) return 'Phone number is required';
+      if (!phonePattern.test(v.parentPhone.trim())) return 'Enter a valid phone number';
       if (!v.relationship) return 'Please select your relationship';
       if (!v.emergencyContact.trim()) return 'Emergency contact is required';
       if (!v.emergencyPhone.trim()) return 'Emergency phone is required';
+      if (!phonePattern.test(v.emergencyPhone.trim())) return 'Enter a valid emergency phone number';
     }
 
     if (step === 2) {
       if (!v.childFirstName.trim()) return "Child's first name is required";
       if (!v.childLastName.trim()) return "Child's last name is required";
       if (!v.childAge.trim()) return "Child's age is required";
+      if (!numberPattern.test(v.childAge.trim())) return "Child's age must be a number";
       if (!v.childGender) return "Please select the child's gender";
-      if (!v.tshirtSize) return 'Please select a t-shirt size';
-      if (!v.swimmingAbility) return 'Please select swimming ability';
     }
 
     return null; // no error
@@ -459,6 +513,45 @@ export function Registration() {
 
   return (
     <section id="register" className="py-8 bg-background transition-colors duration-300">
+      <AnimatePresence>
+        {showSuccessModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="registration-success-title"
+              className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 text-center shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+              initial={{ opacity: 0, y: 16, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.96 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10">
+                <Check className="h-7 w-7 text-emerald-500" />
+              </div>
+              <h3 id="registration-success-title" className="text-2xl font-black text-foreground">
+                Registration Submitted
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Your registration and receipt have been received. We will confirm your payment shortly.
+              </p>
+              <Button
+                type="button"
+                onClick={closeSuccessModal}
+                className="mt-6 w-full bg-gradient-to-r from-purple-600 to-pink-600"
+              >
+                Close
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* HEADER */}
@@ -593,7 +686,7 @@ export function Registration() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                   </svg>
-                  Submitting...
+                  Uploading receipt...
                 </span>
               ) : (
                 'Submit Registration'
@@ -627,10 +720,10 @@ export function Registration() {
                   <div><Label className="mb-2 block">Last Name</Label><Textarea {...register('parentLastName', { required: 'Last name is required' })} placeholder="Doe" className={singleLineClass} /> {errors.parentLastName && <p className="text-red-500 text-xs mt-1">{errors.parentLastName.message}</p>} </div>
                 </div>
 
-                <div><Label className="mb-2 block">Email Address</Label><Textarea {...register('parentEmail', { required: 'Enter a valid Email' })} placeholder="jane@example.com" className={singleLineClass} /> {errors.parentEmail && <p className="text-red-500 text-xs mt-1">{errors.parentEmail.message}</p>} </div>
+                <div><Label className="mb-2 block">Email Address</Label><Textarea {...register('parentEmail', { required: 'Email is required', pattern: { value: emailPattern, message: 'Enter a valid email address' } })} placeholder="jane@example.com" className={singleLineClass} /> {errors.parentEmail && <p className="text-red-500 text-xs mt-1">{errors.parentEmail.message}</p>} </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
-                  <div><Label className="mb-2 block">Phone Number</Label><Textarea {...register('parentPhone', { required: 'Field required' })} placeholder="+234..." className={singleLineClass} /> {errors.parentPhone && <p className="text-red-500 text-xs mt-1">{errors.parentPhone.message}</p>} </div>
+                  <div><Label className="mb-2 block">Phone Number</Label><Textarea {...register('parentPhone', { required: 'Phone number is required', pattern: { value: phonePattern, message: 'Enter a valid phone number' } })} placeholder="+234..." className={singleLineClass} /> {errors.parentPhone && <p className="text-red-500 text-xs mt-1">{errors.parentPhone.message}</p>} </div>
                   <div>
                     <Label className="mb-2 block">Relationship</Label>
                     <Controller
@@ -641,13 +734,14 @@ export function Registration() {
                         <Select value={field.value} onValueChange={field.onChange}>
                           <SelectTrigger className="h-12"><SelectValue placeholder="Select relationship" /></SelectTrigger>
                           <SelectContent className="bg-white dark:bg-black">
-                            <SelectItem value="mother">Mother</SelectItem>
                             <SelectItem value="father">Father</SelectItem>
+                            <SelectItem value="mother">Mother</SelectItem>
                             <SelectItem value="guardian">Guardian</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
                       )} />
+                    {errors.relationship && <p className="text-red-500 text-xs mt-1">{errors.relationship.message}</p>}
                   </div>
                 </div>
 
@@ -660,13 +754,14 @@ export function Registration() {
 
                 <div className="grid md:grid-cols-2 gap-5">
                   <div><Label className="mb-2 block">Emergency Contact</Label><Textarea {...register('emergencyContact')} placeholder="Full name" className={singleLineClass} /></div>
-                  <div><Label className="mb-2 block">Emergency Phone</Label><Textarea {...register('emergencyPhone')} placeholder="+234..." className={singleLineClass} /></div>
+                  <div><Label className="mb-2 block">Emergency Phone</Label><Textarea {...register('emergencyPhone', { required: 'Emergency phone is required', pattern: { value: phonePattern, message: 'Enter a valid emergency phone number' } })} placeholder="+234..." className={singleLineClass} /> {errors.emergencyPhone && <p className="text-red-500 text-xs mt-1">{errors.emergencyPhone.message}</p>}</div>
                 </div>
 
                 <div className="flex justify-end pt-3">
                   <Button type="button" onClick={async () => {
                     const valid = await trigger(['parentFirstName', 'parentLastName', 'parentEmail', 'parentPhone', 'relationship', 'emergencyContact', 'emergencyPhone']);
                     if (valid) { setValidationError(null); setStep(2); }
+                    else { setValidationError(validateStep()); }
                   }} className="bg-gradient-to-r from-purple-600 to-pink-600">
                     Next <ChevronRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -690,7 +785,7 @@ export function Registration() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
-                  <div><Label className="mb-2 block">Age</Label><Textarea {...register('childAge', { required: 'Field is required' })} placeholder="e.g. 12" className={singleLineClass} /> {errors.childAge && <p className="text-red-500 text-xs mt-1">{errors.childAge.message}</p>} </div>
+                  <div><Label className="mb-2 block">Age</Label><Textarea {...register('childAge', { required: 'Age is required', pattern: { value: numberPattern, message: 'Age must be a number' } })} placeholder="e.g. 12" className={singleLineClass} /> {errors.childAge && <p className="text-red-500 text-xs mt-1">{errors.childAge.message}</p>} </div>
                   <div>
                     <Label className="mb-2 block">Gender</Label>
                     <Controller name="childGender" control={control} rules={{ required: 'Please select gender' }} render={({ field }) => (
@@ -702,13 +797,14 @@ export function Registration() {
                         </SelectContent>
                       </Select>
                     )} />
+                    {errors.childGender && <p className="text-red-500 text-xs mt-1">{errors.childGender.message}</p>}
                   </div>
                 </div>
                 {/* swiming and t-shirt size */}
                 <div className="grid md:grid-cols-2 gap-5">
-                  <div>
+                  {/* <div>
                     <Label className="mb-2 block">T-Shirt Size</Label>
-                    <Controller name="tshirtSize" control={control} rules={{ required: 'Please select a size' }} render={({ field }) => (
+                    <Controller name="tshirtSize" control={control} render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger className="h-12"><SelectValue placeholder="Select size" /></SelectTrigger>
                         <SelectContent className="bg-white dark:bg-black">
@@ -718,10 +814,10 @@ export function Registration() {
                         </SelectContent>
                       </Select>
                     )} />
-                  </div>
-                  <div>
+                  </div> */}
+                  {/* <div>
                     <Label className="mb-2 block">Swimming Ability</Label>
-                    <Controller name="swimmingAbility" control={control} rules={{ required: 'Please select swimming ability' }} render={({ field }) => (
+                    <Controller name="swimmingAbility" control={control} render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger className="h-12"><SelectValue placeholder="Select ability" /></SelectTrigger>
                         <SelectContent className="bg-white dark:bg-black">
@@ -732,7 +828,7 @@ export function Registration() {
                         </SelectContent>
                       </Select>
                     )} />
-                  </div>
+                  </div> */}
                 </div>
 
                 {validationError && (
@@ -745,8 +841,9 @@ export function Registration() {
                 <div className="flex justify-between pt-3">
                   <Button type="button" variant="outline" onClick={() => setStep(1)}><ChevronLeft className="mr-2 w-4 h-4" /> Back</Button>
                   <Button type="button" onClick={async () => {
-                    const valid = await trigger(['childFirstName', 'childLastName', 'childAge', 'childGender', 'tshirtSize', 'swimmingAbility']);
+                    const valid = await trigger(['childFirstName', 'childLastName', 'childAge', 'childGender']);
                     if (valid) { setValidationError(null); setStep(3); }
+                    else { setValidationError(validateStep()); }
                   }} className="bg-gradient-to-r from-purple-600 to-pink-600">
                     Next <ChevronRight className="ml-2 w-4 h-4" />
                   </Button>
