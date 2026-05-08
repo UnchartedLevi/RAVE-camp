@@ -902,21 +902,21 @@ export function Registration() {
                         type="button"
                         onClick={() => { setSelectedTicket(ticket); setSubmitError(false); }}
                         whileTap={{ scale: 0.98 }}
-                        className={`w-full text-left rounded-2xl border-2 p-5 transition-all duration-200 ${isSelected ? `${ticket.border} ${ticket.bg} shadow-md` : 'border-border hover:border-zinc-400 dark:hover:border-zinc-600'
+                        className={`w-full text-left rounded-2xl border-2 p-4 sm:p-5 transition-all duration-200 ${isSelected ? `${ticket.border} ${ticket.bg} shadow-md` : 'border-border hover:border-zinc-400 dark:hover:border-zinc-600'
                           }`}
                       >
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ticket.color} flex items-center justify-center shrink-0`}>
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                          <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4">
+                            <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${ticket.color} flex items-center justify-center shrink-0`}>
                               <Icon className="w-5 h-5 text-white" />
                             </div>
-                            <div>
+                            <div className="min-w-0 flex-1">
                               <p className="font-bold text-foreground text-base leading-tight">{ticket.label}</p>
-                              <p className="text-xs text-muted-foreground mt-0.5">{ticket.description}</p>
+                              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{ticket.description}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3 shrink-0">
-                            <span className={`text-lg font-black bg-gradient-to-r ${ticket.color} bg-clip-text text-transparent`}>{ticket.display}</span>
+                          <div className="flex w-full items-center justify-between gap-3 border-t border-border/70 pt-3 sm:w-auto sm:justify-end sm:border-t-0 sm:pt-0">
+                            <span className={`text-xl sm:text-lg font-black bg-gradient-to-r ${ticket.color} bg-clip-text text-transparent`}>{ticket.display}</span>
                             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? `bg-gradient-to-br ${ticket.color} border-transparent` : 'border-muted-foreground/30'
                               }`}>
                               {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
@@ -945,7 +945,7 @@ export function Registration() {
                   </div>
                 )}
 
-                <div className="flex justify-between pt-3">
+                <div className="flex flex-col-reverse gap-3 pt-3 sm:flex-row sm:justify-between">
                   <Button type="button" variant="outline" onClick={() => {
                     const err = validateStep();
                     if (err) { setValidationError(err); return; }
@@ -963,7 +963,7 @@ export function Registration() {
                         handleSubmit(onSubmit)();
                       }
                     }}
-                    className={`bg-gradient-to-r from-purple-600 to-pink-600 px-8 transition-all duration-200 ${!selectedTicket ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                    className={`bg-gradient-to-r from-purple-600 to-pink-600 px-5 sm:px-8 transition-all duration-200 ${!selectedTicket ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
                   >
                     {selectedTicket?.groupTicket
                       ? <><span>Add Children Info</span><ChevronRight className="ml-2 w-4 h-4" /></>
