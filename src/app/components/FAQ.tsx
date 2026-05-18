@@ -8,11 +8,11 @@ const faqData = [
         questions: [
             {
                 question: 'What is R.A.V.E. Leadership Camp?',
-                answer: 'R.A.V.E. (Recharge • Adjust • Vibe • Engage & Empower) is a 6-day intensive leadership development camp for young people aged 11-19. We focus on building leadership skills, drug awareness, digital wellness, and assertiveness through interactive workshops, guest speakers, and hands-on activities.',
+                answer: 'R.A.V.E. (Recharge • Adjust • Vibe • Engage & Empower) is a 6-day intensive leadership development camp for young people ages 10 and above. We focus on building leadership skills, drug awareness, digital wellness, and assertiveness through interactive workshops, guest speakers, and hands-on activities.',
             },
             {
                 question: 'Who can attend the camp?',
-                answer: 'The camp is open to youth aged 11-19 from all countries. Participants should be passionate about personal growth, leadership, and making a positive impact in their communities. No prior leadership experience is required.',
+                answer: 'The camp is open to youth ages 10 and above from all countries. Participants should be passionate about personal growth, leadership, and making a positive impact in their communities. No prior leadership experience is required.',
             },
             {
                 question: 'When and where does the camp take place?',
