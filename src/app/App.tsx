@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
@@ -36,6 +38,8 @@ export default function App() {
         <FAQ />
         {/* <Newsletter /> */}
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </div>
     </ThemeProvider>
   );
