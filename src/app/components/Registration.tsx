@@ -622,11 +622,11 @@ export function Registration() {
                 </div>
                 <div className="flex justify-between items-center border-b border-white/20 pb-3">
                   <span className="text-sm opacity-80">Account Name</span>
-                  <span className="font-bold">CELEEN Initiative</span>
+                  <span className="font-bold">Straitgate High School</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-white/20 pb-3">
                   <span className="text-sm opacity-80">Account Number</span>
-                  <span className="font-bold text-lg tracking-widest">1234567890</span>
+                  <span className="font-bold text-lg tracking-widest">1014705222</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm opacity-80">Amount</span>
