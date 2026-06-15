@@ -3,6 +3,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
+import { Gallery } from './components/Gallery';
 import { About } from './components/About';
 import { Speakers } from './components/Speakers';
 import { Programme } from './components/Programme';
@@ -24,12 +25,13 @@ export default function App() {
       <div className="min-h-screen bg-background px-4 sm:px-6 md:px-8 overflow-x-hidden">
         <Navigation />
         <Hero />
+        <Gallery />
         <About />
         <Speakers />
         {/* <Programme /> */}
         {/* <Registration /> */}
         <Pricing />
-        {/* <LiveFeatures /> */}
+        <LiveFeatures />
         {/* TODO: Re-enable after Day 1 */}
         {/* <Media /> */}
         <Sponsors />
