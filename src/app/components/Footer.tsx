@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, MessageCircle } from 'lucide-react';
+import logo from '../../assets/log.png';
 
 export function Footer() {
   const footerLinks = {
@@ -24,7 +25,7 @@ export function Footer() {
             {/* add the icon here */}
             <div>
               <img
-                src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
+                src={logo}
                 alt="RAVE Camp"
                 className="h-16 sm:h-20 lg:h-24 w-auto"
               />
