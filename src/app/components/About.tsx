@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useRef } from "react";
-import teen from '../../assets/teens1.jpg';
-import teen1 from '../../assets/ten.jpeg';
+import aboutImage from '../../assets/racepics/mentor-moment.jpg';
+import bannerImage from '../../assets/racepics/standing-session.jpg';
 
 export function About() {
   const ref = useRef(null);
@@ -89,8 +89,9 @@ export function About() {
             >
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
                 <ImageWithFallback
-                  src={teen}
-                  alt="Students learning"
+                  src={aboutImage}
+                  alt="RAVE Camp mentor smiling with younger campers"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -184,8 +185,9 @@ export function About() {
           className="relative rounded-3xl overflow-hidden h-[500px] lg:h-[600px] group"
         >
           <img
-            src={teen1}
-            alt="Camp experience"
+            src={bannerImage}
+            alt="RAVE Camp students standing together during a session"
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
 
