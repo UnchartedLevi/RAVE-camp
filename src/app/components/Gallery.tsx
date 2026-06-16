@@ -6,8 +6,19 @@ import { galleryItems, type GalleryMediaItem } from './galleryData';
 const animationMs = 680;
 const autoAdvanceMs = 5200;
 
+function shuffleGalleryItems(items: GalleryMediaItem[]) {
+  const shuffled = [...items];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled;
+}
+
 export function Gallery() {
-  const items = useMemo(() => galleryItems, []);
+  const items = useMemo(() => shuffleGalleryItems(galleryItems), []);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [lightboxItem, setLightboxItem] = useState<GalleryMediaItem | null>(null);
@@ -101,13 +112,13 @@ export function Gallery() {
     <section id="gallery" className="relative -mx-4 sm:-mx-6 md:-mx-8 overflow-hidden bg-white py-24 text-slate-950 sm:py-28 lg:py-36">
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative z-10 mx-auto w-full px-2 sm:px-3 lg:px-4">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.7 }}
-          className="mx-auto mb-12 max-w-3xl text-center lg:mb-16"
+          className="mx-auto mb-12 max-w-5xl text-center lg:mb-16"
         >
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-bold text-purple-700">
             <Camera className="h-4 w-4" />
@@ -125,7 +136,7 @@ export function Gallery() {
         </motion.div>
 
         <div
-          className="relative mx-auto h-[360px] max-w-6xl overflow-hidden sm:h-[430px] lg:h-[520px]"
+          className="relative mx-auto h-[360px] w-full overflow-hidden sm:h-[430px] lg:h-[560px]"
           aria-roledescription="carousel"
           aria-label="RAVE Camp gallery carousel"
           onTouchStart={(event) => {
@@ -238,7 +249,7 @@ function CarouselCard({
       initial={{
         opacity: 0,
         scale: 0.64,
-        x: `calc(-50% + ${offset} * clamp(132px, 18vw, 255px))`,
+        x: `calc(-50% + ${offset} * clamp(132px, 20vw, 310px))`,
         y: 48,
         rotate,
       }}
@@ -246,7 +257,7 @@ function CarouselCard({
         opacity,
         scale,
         rotate,
-        x: `calc(-50% + ${offset} * clamp(132px, 18vw, 255px))`,
+        x: `calc(-50% + ${offset} * clamp(132px, 20vw, 310px))`,
         y: absOffset === 0 ? 0 : absOffset === 1 ? 20 : 38,
         boxShadow: shadow,
       }}
@@ -263,8 +274,8 @@ function CarouselCard({
       tabIndex={isActive ? 0 : -1}
       className={`absolute left-1/2 top-3 h-[300px] overflow-hidden rounded-[2rem] border border-white bg-white text-left outline-none will-change-transform focus:ring-4 focus:ring-purple-500/30 sm:h-[360px] lg:h-[455px] ${
         isPortrait
-          ? 'w-[62vw] max-w-[460px] sm:w-[40vw] lg:w-[31vw]'
-          : 'w-[74vw] max-w-[780px] sm:w-[58vw] lg:w-[52vw]'
+          ? 'w-[68vw] max-w-[520px] sm:w-[46vw] lg:w-[34vw]'
+          : 'w-[82vw] max-w-[980px] sm:w-[66vw] lg:w-[60vw]'
       } ${
         absOffset === 2 ? 'hidden lg:block' : ''
       } ${absOffset === 1 ? 'block' : ''}`}
