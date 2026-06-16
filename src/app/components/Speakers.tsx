@@ -1,111 +1,143 @@
 import { motion } from 'motion/react';
+import { Sparkles } from 'lucide-react';
 import bimpeImage from '../../assets/bimpe.jpeg';
 import alexImage from '../../assets/alex.jpeg';
-import opeImage from '../../assets/woman2.jpg';
 import samImage from '../../assets/samueal.jpeg';
 
+const nagaImage = 'https://res.cloudinary.com/dmbnhcogr/image/upload/v1781609046/pivn5bla4tz1t0knc9g7.png';
+const lajuImage = 'https://res.cloudinary.com/dmbnhcogr/image/upload/v1781609046/k0nw8blodugcw3ixg0hu.png';
+
+type Speaker = {
+  name: string;
+  title: string;
+  about: string;
+  image?: string;
+  imagePath?: string;
+  initials: string;
+};
+
+const speakers: Speaker[] = [
+  {
+    name: 'Coach Bimpe Enike',
+    title: 'Leadership Coach',
+    about: 'Equips young people with practical leadership, etiquette, and personal growth principles for purposeful living.',
+    image: bimpeImage,
+    initials: 'BE',
+  },
+  {
+    name: 'Mr. Alex Onyia',
+    title: 'CEO, Educare',
+    about: 'Leads conversations on education innovation, opportunity, and building systems that help young people thrive.',
+    image: alexImage,
+    initials: 'AO',
+  },
+  {
+    name: 'Pastor Naga Igbinoba',
+    title: 'Prominent Minister',
+    about: 'Brings a strong message of faith, conviction, discipline, and purpose for the next generation.',
+    image: nagaImage,
+    initials: 'NI',
+  },
+  {
+    name: 'Pst Laju Iren',
+    title: 'Award Winning Writer, Film Maker',
+    about: 'Inspires creative courage through storytelling, writing, film, media, and faith-driven influence.',
+    image: lajuImage,
+    initials: 'LI',
+  },
+  {
+    name: 'Mr. Samuel Maradesa',
+    title: 'Counsellor, Author, Speaker',
+    about: 'Guides young people with counselling insight, confidence building, emotional clarity, and life direction.',
+    image: samImage,
+    initials: 'SM',
+  },
+];
+
 export function Speakers() {
-  const speakers = [
-
-    {
-      name: 'Coach Bimpe Enike',
-      title: 'Leadership Coach',
-      expertise: 'Personal Development',
-      image: bimpeImage,
-      bio: 'Coach Bimpe Enike is a self-development coach, purity advocate, and writer based in Lagos, Nigeria. She is the founder of the Menders NGO and the Menders Antipoverty Foundation, focusing on leadership, etiquette, and overcoming challenges to achieve a fulfilled life.',
-    },
-    {
-      name: 'Alex Onyia',
-      title: 'Chief Executive Officer at Educare',
-      expertise: 'Product & Innovation',
-      image: alexImage,
-      bio: 'Alex Onyia is a business executive currently serving as CEO at Educare, likely focused on education-related services or technology. As the top leader of the organization, he\'s responsible for driving strategy, growth, and overall direction of the company.',
-    },
-    // {
-    //   name: 'Vector',
-    //   title: 'Nigerian Rapper & Singer-Songwriter',
-    //   expertise: 'Music & Creative Arts',
-    //   image: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1700000000/vector-speaker.jpg',
-    //   bio: 'Vector is a acclaimed Nigerian rapper and singer-songwriter known for his sharp lyricism and versatile style. He brings a unique creative energy to RAVE Camp, inspiring young participants to find their voice and express themselves through the power of storytelling and the arts.',
-    // },
-    {
-      name: 'Opeyemi Akintunde',
-      title: 'Storyteller. Creative Writer & Filmmaker',
-      expertise: 'Scaling & Growth',
-      image: opeImage,
-      bio: 'Opeyemi Akintunde is a creative professional and storyteller with a focus on filmmaking and written content. She creates impact-driven content aimed at entertaining and inspiring audiences on a global scale — blending artistry with a mission to make a meaningful difference.',
-    },
-    {
-      name: 'Samuel Maradesa',
-      title: 'Counsellor, Author, Speaker & Teacher',
-      expertise: 'Investment & Wealth',
-      image: samImage,
-      bio: 'Samuel Maradesa is a multi-credentialed professional holding certifications in counselling (MCASSON), information systems auditing (CISA), and public administration (APA). He wears several hats as a counsellor, author, speaker, and teacher — suggesting a career centered around personal development, education, and advisory work.',
-    },
-  ];
-
   return (
-    <section id="speakers" className="py-32 lg:py-40 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="speakers" className="relative overflow-hidden bg-[#090313] py-28 text-white lg:py-36">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(170,0,255,0.32),transparent_28%),radial-gradient(circle_at_84%_12%,rgba(178,255,0,0.24),transparent_24%),linear-gradient(135deg,#090313_0%,#150627_55%,#070d05_100%)]" />
+      <div className="absolute inset-0 opacity-25 bg-[linear-gradient(rgba(190,255,0,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(185,52,255,0.16)_1px,transparent_1px)] bg-[size:44px_44px]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-lime-300 to-transparent" />
+
+      <div className="relative mx-auto max-w-[92rem] px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="mb-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end"
         >
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-8 tracking-tight">
-            World-Class{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-              Speakers
-            </span>
-          </h2>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground max-w-4xl mx-auto">
-            Learn from industry leaders and visionaries shaping the future of Africa.
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-lime-300/40 bg-lime-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-lime-200 shadow-[0_0_34px_rgba(190,255,0,0.18)]">
+              <Sparkles className="h-4 w-4" />
+              Speaker Lineup
+            </div>
+            <h2 className="mt-6 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
+              RAVE Camp{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-white to-fuchsia-400">
+                Voices
+              </span>
+            </h2>
+          </div>
+
+          <p className="max-w-2xl text-lg leading-relaxed text-white/70 sm:text-xl lg:ml-auto">
+            The featured minds from the campaign: leadership, education, ministry, film, writing, counselling, and purpose-driven mentorship.
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {speakers.map((speaker, index) => (
-            <motion.div
+            <motion.article
               key={speaker.name}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 34 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.55, delay: index * 0.08 }}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group"
+              className="group relative min-h-[500px] overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] shadow-[0_24px_80px_rgba(0,0,0,0.42)]"
             >
-              <div className="relative overflow-hidden rounded-3xl mb-6 aspect-[3/4]">
-                <img
-                  src={speaker.image}
-                  alt={speaker.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6">
-                  <p className="text-white text-sm leading-relaxed text-center">
-                    {speaker.bio}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#18072c]/10 to-[#090313]" />
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-lime-300 via-fuchsia-400 to-purple-500" />
+
+              <div className="relative h-80 overflow-hidden bg-[#120521]">
+                {speaker.image ? (
+                  <img
+                    src={speaker.image}
+                    alt={speaker.name}
+                    className="h-full w-full object-cover saturate-125 transition duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div
+                    data-needed-image={speaker.imagePath}
+                    className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_50%_18%,rgba(190,255,0,0.32),transparent_35%),linear-gradient(145deg,#1d0737,#090313_58%,#142200)]"
+                  >
+                    <div className="flex h-28 w-28 items-center justify-center rounded-3xl border border-lime-300/45 bg-black/35 text-4xl font-black text-lime-200 shadow-[0_0_48px_rgba(190,255,0,0.25)]">
+                      {speaker.initials}
+                    </div>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#090313] via-transparent to-transparent" />
+                <div className="absolute inset-0 flex items-end bg-black/72 p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <p className="text-sm font-semibold leading-relaxed text-white">
+                    {speaker.about}
                   </p>
                 </div>
               </div>
-              <h3 className="text-2xl font-black text-foreground mb-2">{speaker.name}</h3>
-              <p className="text-base text-purple-500 mb-2 font-semibold">{speaker.title}</p>
-              <p className="text-sm text-muted-foreground">{speaker.expertise}</p>
-            </motion.div>
+
+              <div className="relative p-5">
+                <h3 className="text-2xl font-black leading-tight text-white">
+                  {speaker.name}
+                </h3>
+                <p className="mt-3 text-sm font-bold leading-snug text-lime-200">
+                  {speaker.title}
+                </p>
+              </div>
+            </motion.article>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center mt-16"
-        >
-          <p className="text-xl text-muted-foreground">
-            + more inspiring speakers and mentors
-          </p>
-        </motion.div>
       </div>
     </section>
   );
