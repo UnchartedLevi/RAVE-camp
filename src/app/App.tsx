@@ -31,7 +31,7 @@ export default function App() {
         {/* <Programme /> */}
         {/* <Registration /> */}
         <Pricing />
-        {/* <LiveFeatures /> */}
+        <LiveFeatures />
         {/* TODO: Re-enable after Day 1 */}
         {/* <Media /> */}
         <Sponsors />
