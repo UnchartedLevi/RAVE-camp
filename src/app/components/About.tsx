@@ -9,8 +9,9 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useRef } from "react";
-import aboutImage from '../../assets/racepics/mentor-moment.jpg';
 import bannerImage from '../../assets/racepics/standing-session.jpg';
+
+const aboutImage = 'https://res.cloudinary.com/dmbnhcogr/image/upload/v1781530667/t3sdjjoqktssutf1uxiu.jpg';
 
 export function About() {
   const ref = useRef(null);
