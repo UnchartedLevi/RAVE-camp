@@ -1,50 +1,222 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { TrendingUp, Trophy, Globe, Clock } from 'lucide-react';
+import { Award, Clock, Medal, Trophy } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
+type TeamName = 'Rave Rangers' | 'Storm Kidz' | 'Purple Raven';
+
+type CategoryScore = {
+  name: string;
+  scores: {
+    team: TeamName;
+    points: number;
+  }[];
+};
+
+const dayScores: Record<string, { label: string; categories: CategoryScore[] }> = {
+  day1: {
+    label: 'Day 1',
+    categories: [
+      {
+        name: 'Table Etiquette - Round 1',
+        scores: [
+          { team: 'Rave Rangers', points: -7 },
+          { team: 'Storm Kidz', points: 1 },
+          { team: 'Purple Raven', points: 2 },
+        ],
+      },
+      {
+        name: 'Debate',
+        scores: [
+          { team: 'Rave Rangers', points: 60 },
+          { team: 'Storm Kidz', points: 79 },
+          { team: 'Purple Raven', points: 64 },
+        ],
+      },
+      {
+        name: 'Football',
+        scores: [
+          { team: 'Rave Rangers', points: 4 },
+          { team: 'Storm Kidz', points: 5 },
+          { team: 'Purple Raven', points: 6 },
+        ],
+      },
+      {
+        name: 'Table Etiquette - Round 2',
+        scores: [
+          { team: 'Rave Rangers', points: 20 },
+          { team: 'Storm Kidz', points: 15 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+    ],
+  },
+  day2: {
+    label: 'Day 2',
+    categories: [
+      {
+        name: 'Table Etiquette - Round 1',
+        scores: [
+          { team: 'Rave Rangers', points: -7 },
+          { team: 'Storm Kidz', points: -9 },
+          { team: 'Purple Raven', points: 2 },
+        ],
+      },
+      {
+        name: 'Debate',
+        scores: [
+          { team: 'Rave Rangers', points: 60 },
+          { team: 'Storm Kidz', points: 79 },
+          { team: 'Purple Raven', points: 64 },
+        ],
+      },
+      {
+        name: 'Football',
+        scores: [
+          { team: 'Rave Rangers', points: 4 },
+          { team: 'Storm Kidz', points: 5 },
+          { team: 'Purple Raven', points: 6 },
+        ],
+      },
+      {
+        name: 'Table Etiquette - Round 2',
+        scores: [
+          { team: 'Rave Rangers', points: 20 },
+          { team: 'Storm Kidz', points: 15 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+      {
+        name: 'Seminar Q&A',
+        scores: [
+          { team: 'Rave Rangers', points: 10 },
+          { team: 'Storm Kidz', points: 12 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+      {
+        name: 'Time Management',
+        scores: [
+          { team: 'Rave Rangers', points: 10 },
+          { team: 'Storm Kidz', points: 6 },
+          { team: 'Purple Raven', points: 8 },
+        ],
+      },
+      {
+        name: 'Decision Making',
+        scores: [
+          { team: 'Rave Rangers', points: 20 },
+          { team: 'Storm Kidz', points: 15 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+      {
+        name: 'Communication',
+        scores: [
+          { team: 'Rave Rangers', points: 5 },
+          { team: 'Storm Kidz', points: 8 },
+          { team: 'Purple Raven', points: 5 },
+        ],
+      },
+      {
+        name: 'Arena Games',
+        scores: [
+          { team: 'Rave Rangers', points: 62 },
+          { team: 'Storm Kidz', points: 74 },
+          { team: 'Purple Raven', points: 56 },
+        ],
+      },
+      {
+        name: 'UN',
+        scores: [
+          { team: 'Rave Rangers', points: 39.5 },
+          { team: 'Storm Kidz', points: 35.75 },
+          { team: 'Purple Raven', points: 37 },
+        ],
+      },
+    ],
+  },
+};
+
+function rankTeams(categories: CategoryScore[]) {
+  const totals = categories.reduce<Record<TeamName, number>>(
+    (acc, category) => {
+      category.scores.forEach((score) => {
+        acc[score.team] += score.points;
+      });
+
+      return acc;
+    },
+    {
+      'Rave Rangers': 0,
+      'Storm Kidz': 0,
+      'Purple Raven': 0,
+    },
+  );
+
+  return Object.entries(totals)
+    .map(([team, points]) => ({ team, points }))
+    .sort((a, b) => b.points - a.points);
+}
+
+function formatPoints(points: number) {
+  return Number.isInteger(points) ? points : points.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+}
+
 export function LiveFeatures() {
+  const [activeTab, setActiveTab] = useState('updates');
+  const [selectedDay, setSelectedDay] = useState('day2');
+  const categoryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const updates = [
     {
-      time: '2 hours ago',
-      title: 'Day 3 Workshops Announced',
-      content: 'Strategic Planning & Financial Literacy sessions now open for registration.',
-      type: 'announcement',
+      time: 'Day 2',
+      title: 'RAVE Camp Day 2 Results Are Live',
+      content: 'Day 2 scores have been added across etiquette, debate, football, seminar, leadership, arena, and UN activities.',
+      type: 'camp update',
     },
     {
-      time: '5 hours ago',
-      title: 'New Speaker Added',
-      content: 'Welcome Prof. Sarah Chen - Head of Growth at Global Startups!',
-      type: 'speaker',
-    },
-    {
-      time: '1 day ago',
-      title: 'Early Bird Extended',
-      content: 'Due to popular demand, early bird pricing extended to May 1st!',
-      type: 'pricing',
-    },
-    {
-      time: '2 days ago',
-      title: '200+ Registrations',
-      content: 'We\'ve crossed 200 registrations! Limited spots remaining.',
-      type: 'milestone',
+      time: 'Day 1',
+      title: 'RAVE Camp Day 1 Results Are Live',
+      content: 'Scores are now available for Rave Rangers, Storm Kidz, and Purple Raven across the Day 1 categories.',
+      type: 'camp update',
     },
   ];
 
-  const leaderboard = [
-    { rank: 1, team: 'InnovatorsHub', points: 2450, trend: '+150' },
-    { rank: 2, team: 'Future Leaders Collective', points: 2380, trend: '+120' },
-    { rank: 3, team: 'Impact Warriors', points: 2210, trend: '+180' },
-    { rank: 4, team: 'Tech Pioneers', points: 2100, trend: '+95' },
-    { rank: 5, team: 'Change Makers Alliance', points: 1980, trend: '+110' },
-  ];
+  const showResultsSequence = () => {
+    if (categoryTimer.current) {
+      clearTimeout(categoryTimer.current);
+    }
 
-  const sdgProgress = [
-    { goal: 'SDG 4: Quality Education', progress: 78, color: 'bg-red-500' },
-    { goal: 'SDG 8: Decent Work', progress: 65, color: 'bg-purple-500' },
-    { goal: 'SDG 9: Innovation', progress: 82, color: 'bg-orange-500' },
-    { goal: 'SDG 10: Reduced Inequalities', progress: 71, color: 'bg-pink-500' },
-    { goal: 'SDG 17: Partnerships', progress: 88, color: 'bg-blue-500' },
-  ];
+    setActiveTab('leaderboard');
+    categoryTimer.current = setTimeout(() => {
+      setActiveTab('categories');
+    }, 3500);
+  };
+
+  const handleTabChange = (value: string) => {
+    if (categoryTimer.current) {
+      clearTimeout(categoryTimer.current);
+      categoryTimer.current = null;
+    }
+
+    setActiveTab(value);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (categoryTimer.current) {
+        clearTimeout(categoryTimer.current);
+      }
+    };
+  }, []);
+
+  const selectedDayScores = dayScores[selectedDay];
+  const selectedDayRanking = useMemo(() => rankTeams(selectedDayScores.categories), [selectedDayScores]);
+  const overallRanking = useMemo(
+    () => rankTeams(Object.values(dayScores).flatMap((day) => day.categories)),
+    [],
+  );
 
   return (
     <section className="py-32 lg:py-40 bg-muted/30">
@@ -59,15 +231,15 @@ export function LiveFeatures() {
           <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-8 tracking-tight">
             Live{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-              Updates
+              Results
             </span>
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground max-w-4xl mx-auto">
-            Real-time updates, team performance, and our impact on UN SDGs.
+            RAVE Camp daily updates, team standings, and category scores.
           </p>
         </motion.div>
 
-        <Tabs defaultValue="updates" className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-12 bg-muted/50 p-2 rounded-2xl h-auto gap-1 sm:gap-2">
             <TabsTrigger
               value="updates"
@@ -84,25 +256,27 @@ export function LiveFeatures() {
               <span className="hidden sm:inline">Leaderboard</span>
             </TabsTrigger>
             <TabsTrigger
-              value="sdg"
+              value="categories"
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white text-muted-foreground font-bold py-2 sm:py-4 rounded-xl text-xs sm:text-base"
             >
-              <Globe className="w-3 h-3 sm:w-4 sm:h-5 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">UN SDGs</span>
+              <Medal className="w-3 h-3 sm:w-4 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Categories</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="updates">
             <div className="space-y-6">
               {updates.map((update, index) => (
-                <motion.div
+                <motion.button
+                  type="button"
                   key={index}
+                  onClick={showResultsSequence}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                   whileHover={{ scale: 1.01 }}
-                  className="bg-card border border-border rounded-2xl p-8 hover:border-purple-500/50 transition-all duration-300"
+                  className="w-full text-left bg-card border border-border rounded-2xl p-8 hover:border-purple-500/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/30 transition-all duration-300"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
@@ -116,7 +290,7 @@ export function LiveFeatures() {
                       <p className="text-lg text-muted-foreground">{update.content}</p>
                     </div>
                   </div>
-                </motion.div>
+                </motion.button>
               ))}
             </div>
           </TabsContent>
@@ -125,35 +299,85 @@ export function LiveFeatures() {
             <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 lg:p-10">
               <div className="flex items-center gap-3 mb-6 sm:mb-8">
                 <Trophy className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-500" />
-                <h3 className="text-2xl sm:text-3xl font-black text-foreground">Team Rankings</h3>
+                <h3 className="text-2xl sm:text-3xl font-black text-foreground">Current Rankings</h3>
               </div>
+
+              <div className="mb-10">
+                <div className="mb-4 flex items-center gap-2 text-purple-500">
+                  <Award className="w-5 h-5" />
+                  <h4 className="text-xl font-black text-foreground">All Days So Far</h4>
+                </div>
+                <div className="space-y-3 sm:space-y-4">
+                  {overallRanking.map((team, index) => (
+                    <motion.div
+                      key={team.team}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className={`flex items-center gap-3 sm:gap-6 p-3 sm:p-6 rounded-2xl ${index === 0
+                        ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50'
+                        : 'bg-muted/50'
+                        }`}
+                    >
+                      <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-lg sm:text-xl ${index === 0 ? 'bg-yellow-500 text-black' :
+                        index === 1 ? 'bg-gray-400 text-black' :
+                          'bg-amber-700 text-white'
+                        }`}>
+                        {index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-base sm:text-xl font-bold text-foreground truncate">{team.team}</h4>
+                        <p className="text-sm sm:text-base text-muted-foreground">{formatPoints(team.points)} points</p>
+                      </div>
+                      <div className="flex items-center gap-1 sm:gap-2 text-purple-500 flex-shrink-0">
+                        <Award className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span className="font-bold text-sm sm:text-lg">Days 1-2</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                {Object.entries(dayScores).map(([key, day]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setSelectedDay(key)}
+                    className={`rounded-xl px-4 py-2 text-sm font-bold transition-colors ${selectedDay === key
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      }`}
+                  >
+                    {day.label}
+                  </button>
+                ))}
+              </div>
+
               <div className="space-y-3 sm:space-y-4">
-                {leaderboard.map((team, index) => (
+                {selectedDayRanking.map((team, index) => (
                   <motion.div
-                    key={team.rank}
+                    key={`${selectedDay}-${team.team}`}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`flex items-center gap-3 sm:gap-6 p-3 sm:p-6 rounded-2xl ${team.rank === 1
-                      ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50'
-                      : 'bg-muted/50'
-                      }`}
+                    className="flex items-center gap-3 sm:gap-6 p-3 sm:p-5 rounded-2xl bg-muted/50"
                   >
-                    <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-lg sm:text-xl ${team.rank === 1 ? 'bg-yellow-500 text-black' :
-                      team.rank === 2 ? 'bg-gray-400 text-black' :
-                        team.rank === 3 ? 'bg-amber-700 text-white' :
-                          'bg-muted text-foreground'
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex-shrink-0 flex items-center justify-center font-black text-lg ${index === 0 ? 'bg-yellow-500 text-black' :
+                      index === 1 ? 'bg-gray-400 text-black' :
+                        'bg-amber-700 text-white'
                       }`}>
-                      {team.rank}
+                      {index + 1}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-base sm:text-xl font-bold text-foreground truncate">{team.team}</h4>
-                      <p className="text-sm sm:text-base text-muted-foreground">{team.points} points</p>
+                      <p className="text-sm sm:text-base text-muted-foreground">{formatPoints(team.points)} points</p>
                     </div>
-                    <div className="flex items-center gap-1 sm:gap-2 text-green-500 flex-shrink-0">
-                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span className="font-bold text-sm sm:text-lg">{team.trend}</span>
+                    <div className="flex items-center gap-1 sm:gap-2 text-purple-500 flex-shrink-0">
+                      <Award className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="font-bold text-sm sm:text-lg">{selectedDayScores.label}</span>
                     </div>
                   </motion.div>
                 ))}
@@ -161,36 +385,53 @@ export function LiveFeatures() {
             </div>
           </TabsContent>
 
-          <TabsContent value="sdg">
+          <TabsContent value="categories">
             <div className="bg-card border border-border rounded-2xl p-8 lg:p-10">
-              <div className="flex items-center gap-3 mb-6">
-                <Globe className="w-8 h-8 text-blue-500" />
-                <h3 className="text-3xl font-black text-foreground">UN SDG Alignment</h3>
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Medal className="w-8 h-8 text-purple-500" />
+                  <h3 className="text-3xl font-black text-foreground">Category Scores</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(dayScores).map(([key, day]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setSelectedDay(key)}
+                      className={`rounded-xl px-4 py-2 text-sm font-bold transition-colors ${selectedDay === key
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                        }`}
+                    >
+                      {day.label}
+                    </button>
+                  ))}
+                </div>
               </div>
               <p className="text-lg text-muted-foreground mb-10">
-                R.A.V.E. Camp projects contribute to the United Nations Sustainable Development Goals
+                {selectedDayScores.label} scores for the three camp teams under each scored category.
               </p>
-              <div className="space-y-8">
-                {sdgProgress.map((sdg, index) => (
+              <div className="grid gap-5 md:grid-cols-2">
+                {selectedDayScores.categories.map((category, index) => (
                   <motion.div
-                    key={index}
+                    key={category.name}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className="bg-muted/40 border border-border rounded-2xl p-5 sm:p-6"
                   >
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-foreground font-bold text-lg">{sdg.goal}</span>
-                      <span className="text-muted-foreground font-bold text-xl">{sdg.progress}%</span>
-                    </div>
-                    <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${sdg.progress}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
-                        className={`h-full ${sdg.color} rounded-full`}
-                      />
+                    <h4 className="text-xl font-black text-foreground mb-5">{category.name}</h4>
+                    <div className="space-y-3">
+                      {category.scores.map((score) => (
+                        <div
+                          key={`${category.name}-${score.team}`}
+                          className="flex items-center justify-between gap-4 rounded-xl bg-background/60 px-4 py-3"
+                        >
+                          <span className="font-bold text-foreground">{score.team}</span>
+                          <span className="text-lg font-black text-purple-500">{formatPoints(score.points)}</span>
+                        </div>
+                      ))}
                     </div>
                   </motion.div>
                 ))}
