@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Award, ArrowRight, Calendar, MapPin, Users } from 'lucide-react';
 import { Button } from './ui/button';
-import heroImage from '../../assets/racepics/arrival-group.jpg';
+import heroImage from '../../assets/racepics/mentor-moment.jpg';
 
 export function Hero() {
   const stats = [
@@ -15,7 +15,7 @@ export function Hero() {
       <div className="absolute inset-0">
         <img
           src={heroImage}
-          alt="RAVE Camp students arriving together at camp"
+          alt="RAVE Camp mentor leading an interactive youth session"
           className="h-full w-full object-cover object-center"
           fetchPriority="high"
         />
