@@ -136,6 +136,115 @@ const dayScores: Record<string, { label: string; categories: CategoryScore[] }> 
       },
     ],
   },
+  day6: {
+    label: 'Day 6',
+    categories: [
+      {
+        name: 'Table Etiquette - Round 1',
+        scores: [
+          { team: 'Rave Rangers', points: -7 },
+          { team: 'Storm Kidz', points: -9 },
+          { team: 'Purple Raven', points: 2 },
+        ],
+      },
+      {
+        name: 'Debate',
+        scores: [
+          { team: 'Rave Rangers', points: 60 },
+          { team: 'Storm Kidz', points: 79 },
+          { team: 'Purple Raven', points: 64 },
+        ],
+      },
+      {
+        name: 'Football - Round 1',
+        scores: [
+          { team: 'Rave Rangers', points: 4 },
+          { team: 'Storm Kidz', points: 5 },
+          { team: 'Purple Raven', points: 6 },
+        ],
+      },
+      {
+        name: 'Table Etiquette - Round 2',
+        scores: [
+          { team: 'Rave Rangers', points: 20 },
+          { team: 'Storm Kidz', points: 15 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+      {
+        name: 'Seminar Q&A',
+        scores: [
+          { team: 'Rave Rangers', points: 10 },
+          { team: 'Storm Kidz', points: 12 },
+          { team: 'Purple Raven', points: 15 },
+        ],
+      },
+      {
+        name: 'Time Management',
+        scores: [
+          { team: 'Rave Rangers', points: 10 },
+          { team: 'Storm Kidz', points: 6 },
+          { team: 'Purple Raven', points: 8 },
+        ],
+      },
+      {
+        name: 'Decision Making',
+        scores: [
+          { team: 'Rave Rangers', points: 20 },
+          { team: 'Storm Kidz', points: 15 },
+          { team: 'Purple Raven', points: 14 },
+        ],
+      },
+      {
+        name: 'Communication',
+        scores: [
+          { team: 'Rave Rangers', points: 5 },
+          { team: 'Storm Kidz', points: 8 },
+          { team: 'Purple Raven', points: 5 },
+        ],
+      },
+      {
+        name: 'Arena Games - Round 1',
+        scores: [
+          { team: 'Rave Rangers', points: 62 },
+          { team: 'Storm Kidz', points: 74 },
+          { team: 'Purple Raven', points: 56 },
+        ],
+      },
+      {
+        name: 'UN',
+        scores: [
+          { team: 'Rave Rangers', points: 39.5 },
+          { team: 'Storm Kidz', points: 35.75 },
+          { team: 'Purple Raven', points: 37 },
+        ],
+      },
+      {
+        name: 'Football - Round 2',
+        scores: [
+          { team: 'Rave Rangers', points: 4 },
+          { team: 'Storm Kidz', points: 8 },
+          { team: 'Purple Raven', points: 10 },
+        ],
+      },
+      {
+        name: 'Table Etiquette - Round 3',
+        scores: [
+          { team: 'Rave Rangers', points: 3 },
+          { team: 'Storm Kidz', points: 5 },
+          { team: 'Purple Raven', points: 4 },
+        ],
+      },
+      {
+        name: 'Arena Games - Round 2',
+        scores: [
+          { team: 'Rave Rangers', points: 36 },
+          { team: 'Storm Kidz', points: 36 },
+          { team: 'Purple Raven', points: 37 },
+        ],
+      },
+    ],
+  },
 };
 
 function rankTeams(categories: CategoryScore[]) {
@@ -165,10 +274,16 @@ function formatPoints(points: number) {
 
 export function LiveFeatures() {
   const [activeTab, setActiveTab] = useState('updates');
-  const [selectedDay, setSelectedDay] = useState('day2');
+  const [selectedDay, setSelectedDay] = useState('day6');
   const categoryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updates = [
+    {
+      time: 'Day 6',
+      title: 'RAVE Camp Day 6 Results Are Live',
+      content: 'Day 6 scores have been added across etiquette, debate, football, seminar, leadership, arena, and UN activities.',
+      type: 'camp update',
+    },
     {
       time: 'Day 2',
       title: 'RAVE Camp Day 2 Results Are Live',
@@ -332,7 +447,7 @@ export function LiveFeatures() {
                       </div>
                       <div className="flex items-center gap-1 sm:gap-2 text-purple-500 flex-shrink-0">
                         <Award className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span className="font-bold text-sm sm:text-lg">Days 1-2</span>
+                        <span className="font-bold text-sm sm:text-lg">All Days</span>
                       </div>
                     </motion.div>
                   ))}
