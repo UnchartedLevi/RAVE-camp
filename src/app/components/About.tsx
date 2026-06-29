@@ -6,14 +6,23 @@ import {
   Trophy,
   Cpu,
   CheckCircle,
+  Play,
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { useRef } from "react";
-import teen from '../../assets/teens1.jpg';
-import teen1 from '../../assets/ten.jpeg';
+import { useRef, useState } from "react";
+import bannerImage from '../../assets/racepics/standing-session.jpg';
+
+const aboutImage = 'https://res.cloudinary.com/dmbnhcogr/image/upload/v1781530667/t3sdjjoqktssutf1uxiu.jpg';
 
 export function About() {
   const ref = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoStarted, setIsVideoStarted] = useState(false);
+
+  const playHighlightVideo = () => {
+    setIsVideoStarted(true);
+    void videoRef.current?.play();
+  };
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -89,8 +98,9 @@ export function About() {
             >
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
                 <ImageWithFallback
-                  src={teen}
-                  alt="Students learning"
+                  src={aboutImage}
+                  alt="RAVE Camp mentor smiling with younger campers"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -175,39 +185,64 @@ export function About() {
           ))}
         </div>
 
-        {/* Bottom Image Banner */}
+        {/* Highlight Video */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="relative rounded-3xl overflow-hidden h-[500px] lg:h-[600px] group"
+          className="group relative h-[500px] overflow-hidden rounded-3xl bg-slate-950 shadow-2xl shadow-purple-500/15 lg:h-[600px]"
         >
-          <img
-            src={teen1}
-            alt="Camp experience"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
+          <video
+            ref={videoRef}
+            className="h-full w-full object-contain"
+            poster={bannerImage}
+            controls={isVideoStarted}
+            preload="metadata"
+            playsInline
+            onPlay={() => setIsVideoStarted(true)}
+            onEnded={() => {
+              setIsVideoStarted(false);
+              if (videoRef.current) videoRef.current.currentTime = 0;
+            }}
+          >
+            <source src="/raveRecap.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+          {!isVideoStarted && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-purple-950/35 to-slate-950/10" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-10 lg:p-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <h3 className="text-3xl lg:text-4xl font-black text-white mb-3">
-                6 Days of Transformation
-              </h3>
+              <button
+                type="button"
+                onClick={playHighlightVideo}
+                aria-label="Play 6 Days of Transformation highlight video"
+                className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-white/80 bg-gradient-to-br from-purple-600 to-pink-500 text-white shadow-2xl shadow-pink-500/40 transition duration-300 hover:scale-110 hover:rotate-3 focus:outline-none focus:ring-4 focus:ring-pink-300 focus:ring-offset-4 focus:ring-offset-purple-950 active:scale-95"
+              >
+                <span className="absolute inset-[-12px] -z-10 animate-pulse rounded-full bg-pink-400/25" />
+                <Play className="ml-1 h-10 w-10 fill-current" />
+              </button>
 
-              <p className="text-xl lg:text-2xl text-gray-200">
-                Join us in Forthright Gardens Estate, Lagos-Ibadan Expressway
-                for an unforgettable experience
-              </p>
-            </motion.div>
-          </div>
+              <div className="absolute bottom-0 left-0 right-0 p-10 lg:p-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <h3 className="mb-3 text-3xl font-black text-white lg:text-4xl">
+                    6 Days of Transformation
+                  </h3>
+
+                  <p className="text-xl text-gray-200 lg:text-2xl">
+                    Join us in Forthright Gardens Estate, Lagos-Ibadan Expressway
+                    for an unforgettable experience
+                  </p>
+                </motion.div>
+              </div>
+            </>
+          )}
         </motion.div>
       </div>
     </section>

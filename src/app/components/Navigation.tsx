@@ -1,8 +1,9 @@
-//commented out program and media links for now, can be added back in when we have the content ready
 import { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useTheme } from "./ThemeProvider";
+
+const logoUrl = "https://media.githubusercontent.com/media/smairdude/RAVE-camp/refs/heads/main/src/assets/log.png";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,11 +20,11 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
+    { name: "Gallery", href: "#gallery" },
     { name: "About", href: "#about" },
     { name: "Speakers", href: "#speakers" },
     // { name: "Programme", href: "#programme" },
     { name: "Pricing", href: "#pricing" },
-    // { name: "Media", href: "#media" },
   ];
 
   const scrollToSection = (href: string) => {
@@ -56,7 +57,7 @@ export function Navigation() {
             className="shrink-0 hover:opacity-80 transition-opacity duration-300"
           >
             <img
-              src="https://media.githubusercontent.com/media/UnchartedLevi/RAVE-camp/refs/heads/main/src/assets/log.png"
+              src={logoUrl}
               alt="RAVE Camp"
               className="h-12 sm:h-14 lg:h-16 w-auto"
             />
