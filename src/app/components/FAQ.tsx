@@ -117,7 +117,7 @@ const faqData = [
             },
             {
                 question: 'Who do I contact with questions?',
-                answer: 'Email us at info@ravecamp.org, call +234 806 306 2447, or WhatsApp us. Our parent information page also has detailed FAQs and resources.',
+                answer: 'Email us at hello@ravecamp.org, call +234 806 306 2447, or WhatsApp us. Our parent information page also has detailed FAQs and resources.',
             },
         ],
     },
